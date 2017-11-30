@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>自定义控件——ListView下拉刷新和上拉加载 | Skyrim | Top</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="进入冰冷的季节了。好想在被窝敲代码。。。。首先放一下效果 添加HeadView实现下拉刷新 添加FooterView实现上拉加载 创建类继承ListView ，构造方法继承前两个 ...">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义控件——ListView下拉刷新和上拉加载">
+<meta property="og:url" content="http://skyrim.me/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/index.html">
+<meta property="og:site_name" content="Skyrim | Top">
+<meta property="og:description" content="进入冰冷的季节了。好想在被窝敲代码。。。。首先放一下效果 添加HeadView实现下拉刷新 添加FooterView实现上拉加载 创建类继承ListView ，构造方法继承前两个 ...">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20161026215219082">
+<meta property="og:image" content="http://img.blog.csdn.net/20161026215505368">
+<meta property="og:image" content="http://img.blog.csdn.net/20161026220320081">
+<meta property="og:updated_time" content="2016-10-26T14:52:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义控件——ListView下拉刷新和上拉加载">
+<meta name="twitter:description" content="进入冰冷的季节了。好想在被窝敲代码。。。。首先放一下效果 添加HeadView实现下拉刷新 添加FooterView实现上拉加载 创建类继承ListView ，构造方法继承前两个 ...">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161026215219082">
+  
+    <link rel="alternative" href="/atom.xml" title="Skyrim | Top" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Oblivion</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">我的简历</a></li>
+                        
+                            <li><a href="/FrontEndGuide">酷站导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 12px;">Android Studio</a> <a href="/tags/GO/" style="font-size: 12px;">GO</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Kotlin/" style="font-size: 12px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/OpenGL/" style="font-size: 10px;">OpenGL</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/ReactNative/" style="font-size: 10px;">ReactNative</a> <a href="/tags/TP5/" style="font-size: 10px;">TP5</a> <a href="/tags/Vue/" style="font-size: 12px;">Vue</a> <a href="/tags/XShell/" style="font-size: 10px;">XShell</a> <a href="/tags/前端/" style="font-size: 12px;">前端</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 18px;">异常</a> <a href="/tags/控件/" style="font-size: 10px;">控件</a> <a href="/tags/杂项/" style="font-size: 18px;">杂项</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/热修复/" style="font-size: 10px;">热修复</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://luuman.github.io/">name</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">随便写写，写下一段传奇</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Oblivion</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Oblivion</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">我的简历</a></li>
+                
+                    <li><a href="/FrontEndGuide">酷站导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-自定义控件——ListView下拉刷新和上拉加载" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/" class="article-date">
+      <time datetime="2016-10-26T14:52:28.000Z" itemprop="datePublished">2016-10-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自定义控件——ListView下拉刷新和上拉加载
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>####进入冰冷的季节了。好想在被窝敲代码。。。。</p>
+<hr>
+<p><strong>首先放一下效果</strong></p>
+<ol>
+<li>添加HeadView实现下拉刷新<br>   <img src="http://img.blog.csdn.net/20161026215219082" alt="下拉刷新"></li>
+<li>添加FooterView实现上拉加载<br> <img src="http://img.blog.csdn.net/20161026215505368" alt="上拉加载"></li>
+<li>创建类继承ListView ，构造方法继承前两个</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 重写创建时用的构造方法</span><br><span class="line">    *</span><br><span class="line">    * @param context</span><br><span class="line">    */</span><br><span class="line">   public PullPushListView(Context context) &#123;</span><br><span class="line">       super(context);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 重写赋值参数时用的构造方法</span><br><span class="line">    *</span><br><span class="line">    * @param context</span><br><span class="line">    * @param attrs</span><br><span class="line">    */</span><br><span class="line">   public PullPushListView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">       super(context, attrs);</span><br><span class="line">       //初始化头部信息</span><br><span class="line">       initHeaderView();</span><br><span class="line">       //初始化尾部信息</span><br><span class="line">       initFooterView();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>4.下拉刷新的实现原理  通过padding属性，当属性为负数的时候就会隐藏如图：<img src="http://img.blog.csdn.net/20161026220320081" alt="padding"><br>5.上拉加载同样原理，不再演示–</p>
+<hr>
+<p>##首先我们分为两部分去学习</p>
+<p>第一部分： 下拉部分–<br>首先我们要想加入一个headView 需要我们对这个要加入到顶部的条目进行布局</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;RelativeLayout</span><br><span class="line">        android:layout_width=&quot;50dp&quot;</span><br><span class="line">        android:layout_height=&quot;50dp&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;ImageView</span><br><span class="line">            android:id=&quot;@+id/iv_arrow&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">            android:src=&quot;@drawable/arrow&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;ProgressBar</span><br><span class="line">        android:id=&quot;@+id/iv_circle&quot;</span><br><span class="line">        style=&quot;@android:style/Widget.ProgressBar&quot;</span><br><span class="line">        android:layout_width=&quot;30dp&quot;</span><br><span class="line">        android:layout_height=&quot;30dp&quot;</span><br><span class="line">        android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">        android:indeterminateDrawable=&quot;@drawable/progress_medium_white&quot;</span><br><span class="line">        android:visibility=&quot;invisible&quot; /&gt;</span><br><span class="line">    &lt;/RelativeLayout&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:layout_width=&quot;fill_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_centerHorizontal=&quot;true&quot;</span><br><span class="line">        android:gravity=&quot;center&quot;</span><br><span class="line">        android:orientation=&quot;vertical&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=&quot;@+id/tv_loadtext&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_marginTop=&quot;10dp&quot;</span><br><span class="line">            android:text=&quot;下拉刷新&quot;</span><br><span class="line">            android:textColor=&quot;#ffff0000&quot;</span><br><span class="line">            android:textSize=&quot;18sp&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_marginLeft=&quot;2dp&quot;</span><br><span class="line">            android:layout_marginTop=&quot;5dp&quot;</span><br><span class="line">            android:gravity=&quot;center&quot;</span><br><span class="line">            android:text=&quot;上次刷新 2016-10-23 12:41:58&quot; /&gt;</span><br><span class="line">    &lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>1.1 初始化headView，将设定的头部信息隐藏，主要是对要inflate的头部布局进行测量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 初始化HeaderView</span><br><span class="line">   */</span><br><span class="line">  private void initHeaderView() &#123;</span><br><span class="line">      //为自定义ListView添加头部信息</span><br><span class="line">      headerView = View.inflate(getContext(), R.layout.item_headview, null);</span><br><span class="line">      tv_loadtext = (TextView) headerView.findViewById(R.id.tv_loadtext);</span><br><span class="line">      iv_arrow = (ImageView) headerView.findViewById(R.id.iv_arrow);</span><br><span class="line">      pb_circle = (ProgressBar) headerView.findViewById(R.id.iv_circle);</span><br><span class="line">      //将progressBar 设定为Gone</span><br><span class="line">      pb_circle.setVisibility(View.GONE);</span><br><span class="line">      //通知进行布局测量&lt;&lt;&lt;&lt;&lt;&lt;卧槽尼玛的，不能测量RelativeLayout布局开头&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">      headerView.measure(0, 0);</span><br><span class="line">      //获取测量高度，在之前需要测量一下，否则无法获 取正确数据</span><br><span class="line">      meatureHeight = headerView.getMeasuredHeight();</span><br><span class="line">      //通知进行布局测量</span><br><span class="line">      headerView.measure(0, 0);</span><br><span class="line">      Log.i(TAG, &quot;PullPushListView: &quot; + meatureHeight);</span><br><span class="line">      //添加headerView到页面</span><br><span class="line">      super.addHeaderView(headerView);</span><br><span class="line">      //整体隐藏headerView</span><br><span class="line">      inithideheaderView(-meatureHeight);</span><br><span class="line">      headerView.setClickable(false);</span><br><span class="line">      STATE_CURRENT = STATE_PULL;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>1.2 通过onTouchEvent(MotationEvent event);,对触摸事件处理实现动态拉出头部条目，以及涉及到状态的改变<br>在此之前，我们需要设定三个状态，用于记录当前是那种状态<br>1.2.1状态可以通过设定三个全局变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 下拉状态</span><br><span class="line">    */</span><br><span class="line">   private static final int STATE_PULL = 0;</span><br><span class="line">   /**</span><br><span class="line">    * 松开刷新状态</span><br><span class="line">    */</span><br><span class="line">   private static final int STATE_PUSH = 1;</span><br><span class="line">   /**</span><br><span class="line">    * 正在刷新状态</span><br><span class="line">    */</span><br><span class="line">   private static final int STATE_REFRESH = 2;</span><br><span class="line">   /**</span><br><span class="line">    * 当前状态</span><br><span class="line">    */</span><br><span class="line">   private int STATE_CURRENT;</span><br></pre></td></tr></table></figure>
+<p>1.2.2 也可以通过获取TextView 中的条目内容获取，不过麻烦，这里舍弃</p>
+<p>下面是触摸事件的实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * headerView 根据传入的数值动态改变HeaderView据上边界的高度</span><br><span class="line">    */</span><br><span class="line">   private void inithideheaderView(int top) &#123;</span><br><span class="line">       headerView.setPadding(0, top, 0, 0);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 对ListView 添加触摸事件</span><br><span class="line">    *</span><br><span class="line">    * @param event</span><br><span class="line">    * @return</span><br><span class="line">    */</span><br><span class="line">   @Override</span><br><span class="line">   public boolean onTouchEvent(MotionEvent event) &#123;</span><br><span class="line">       switch (event.getAction()) &#123;</span><br><span class="line">           //手指按下事件</span><br><span class="line">           case MotionEvent.ACTION_DOWN:</span><br><span class="line">               if (STATE_CURRENT == STATE_REFRESH) &#123;//如果状态是正在刷新状态，就不执行其他操作</span><br><span class="line">                   iv_arrow.setVisibility(GONE);</span><br><span class="line">                   pb_circle.setVisibility(View.VISIBLE);</span><br><span class="line">                   return super.onTouchEvent(event);</span><br><span class="line">               &#125;</span><br><span class="line">               down_dot = event.getY();//如果不是正在刷新状态记录按下的点</span><br><span class="line">               break;</span><br><span class="line">           //手指移动事件</span><br><span class="line">           case MotionEvent.ACTION_MOVE:</span><br><span class="line">               if (STATE_CURRENT == STATE_REFRESH &amp;&amp; getFirstVisiblePosition() == 0) &#123;//如果状态是正在刷新状态，就不执行其他操作</span><br><span class="line">                   iv_arrow.setVisibility(GONE);</span><br><span class="line">                   pb_circle.setVisibility(View.VISIBLE);</span><br><span class="line">                   return super.onTouchEvent(event);</span><br><span class="line">               &#125; else if ((STATE_CURRENT == STATE_PULL || STATE_CURRENT == STATE_PUSH) &amp;&amp; getFirstVisiblePosition() == 0) &#123;</span><br><span class="line"></span><br><span class="line">                   //手指移动的点</span><br><span class="line">                   float move_dot = event.getY();</span><br><span class="line">                   //距离按下点的相对向下移动的距离</span><br><span class="line">                   float movePullDistance = move_dot - down_dot;</span><br><span class="line">                   //判断是否向下滑动，第一个条目是否是0，</span><br><span class="line">                   if (movePullDistance &gt; 0 &amp;&amp; getFirstVisiblePosition() == 0 &amp;&amp; movePullDistance &lt; meatureHeight) &#123;</span><br><span class="line">                       inithideheaderView((int) movePullDistance - meatureHeight);</span><br><span class="line">                       //向下滑动，动态改变HeardView距离上边界的距离，但是还没有到达修改箭头的边界</span><br><span class="line">                       if (STATE_CURRENT == STATE_PUSH) &#123;</span><br><span class="line">                           tv_loadtext.setText(&quot;下拉刷新&quot;);</span><br><span class="line">                           rotateArrow_changeText();</span><br><span class="line">                           STATE_CURRENT = STATE_PULL;//修改状态，在这个范围内不再修改状态</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125; else if (movePullDistance == meatureHeight) &#123;</span><br><span class="line">                       STATE_CURRENT = STATE_CURRENT == STATE_PUSH ? STATE_PUSH : STATE_PULL;//判断状态</span><br><span class="line">                   &#125; else if (movePullDistance &gt; meatureHeight &amp;&amp; movePullDistance &lt; 2 * meatureHeight) &#123;</span><br><span class="line">                       inithideheaderView((int) ((movePullDistance - meatureHeight) / 2 + 0));</span><br><span class="line">                       //旋转箭头，修改文本,下拉幅度到边界值大于一个HeadView高度</span><br><span class="line">                       if (STATE_CURRENT == STATE_PULL) &#123;//如果是下拉状态，改变</span><br><span class="line">                           tv_loadtext.setText(&quot;松开刷新&quot;);</span><br><span class="line">                           rotateArrow_changeText();</span><br><span class="line">                           STATE_CURRENT = STATE_PUSH;//修改状态，在这个范围内不再修改状态</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;</span><br><span class="line">                   return super.onTouchEvent(event);</span><br><span class="line">               &#125;</span><br><span class="line">               break;</span><br><span class="line">           //手指抬起事件</span><br><span class="line">           case MotionEvent.ACTION_UP:</span><br><span class="line">               if (STATE_CURRENT == STATE_PUSH) &#123;//如果是松开刷新状态那就改变状态</span><br><span class="line">                   inithideheaderView(0);</span><br><span class="line">                   //松开手指后，图片修改为旋转progressBar,修改文本</span><br><span class="line">                   pb_circle.setVisibility(View.VISIBLE);</span><br><span class="line">                   //必须将动画清除掉。。不然无法隐藏</span><br><span class="line">                   iv_arrow.clearAnimation();</span><br><span class="line">                   iv_arrow.setVisibility(GONE);</span><br><span class="line">                   tv_loadtext.setText(&quot;正在刷新&quot;);</span><br><span class="line">                   STATE_CURRENT = STATE_REFRESH;//修改为刷新状态</span><br><span class="line">                   if (mOnRefreshStateListener != null &amp;&amp; !refreshingState) &#123;//如果不是正在刷新的状态，而且回调接口非空</span><br><span class="line">                       refreshingState = true;</span><br><span class="line">                       mOnRefreshStateListener.OnRefresh();//执行回调的接口</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125; else if (STATE_CURRENT == STATE_PULL) &#123;</span><br><span class="line">                   inithideheaderView(-meatureHeight);</span><br><span class="line">                   pb_circle.setVisibility(View.GONE);</span><br><span class="line">                   iv_arrow.setVisibility(View.VISIBLE);</span><br><span class="line">                   //因为已经清除了动画，所以这里自动回去了，不必在设定转回原点</span><br><span class="line">                   tv_loadtext.setText(&quot;下拉刷新&quot;);</span><br><span class="line">                   STATE_CURRENT = STATE_PULL;</span><br><span class="line">               &#125;</span><br><span class="line">               break;</span><br><span class="line">       &#125;</span><br><span class="line">       return super.onTouchEvent(event);//必须有这个，这个是让ListView滑动的</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p> 1.3 刷新中需要设定一些小动画，这些动画实现方法，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 创建旋转动画</span><br><span class="line">     */</span><br><span class="line">    private void setRotateAnimation(float fromDegrees, float toDegrees) &#123;</span><br><span class="line">        mRotateAnimation = new RotateAnimation(fromDegrees, toDegrees, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);</span><br><span class="line">        mRotateAnimation.setDuration(500);</span><br><span class="line">        mRotateAnimation.setFillAfter(true);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"> /**</span><br><span class="line">     * 刷新完成后的状态</span><br><span class="line">     */</span><br><span class="line">    public void refreshComplement() &#123;</span><br><span class="line">        inithideheaderView(-meatureHeight);</span><br><span class="line">        pb_circle.setVisibility(View.GONE);</span><br><span class="line">        iv_arrow.setVisibility(View.VISIBLE);</span><br><span class="line">        //因为已经清除了动画，所以这里自动回去了，不必在设定转回原点</span><br><span class="line">        tv_loadtext.setText(&quot;下拉刷新&quot;);</span><br><span class="line">        STATE_CURRENT = STATE_PULL;</span><br><span class="line">        refreshingState = false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 旋转箭头，修改文本</span><br><span class="line">     */</span><br><span class="line">    private void rotateArrow_changeText() &#123;</span><br><span class="line">        if (STATE_CURRENT == STATE_PULL) &#123;//如果状态为下拉状态</span><br><span class="line">            fromDegrees = 0f;</span><br><span class="line">            toDegrees = 180f;</span><br><span class="line">            //iv_arrow.clearAnimation();//先清除一下动画效果</span><br><span class="line">            setRotateAnimation(fromDegrees, toDegrees);</span><br><span class="line">            iv_arrow.startAnimation(mRotateAnimation);</span><br><span class="line">        &#125; else if (STATE_CURRENT == STATE_PUSH) &#123;</span><br><span class="line">            fromDegrees = 180f;</span><br><span class="line">            toDegrees = 360f;</span><br><span class="line">            //iv_arrow.clearAnimation();//先清除一下动画效果</span><br><span class="line">            setRotateAnimation(fromDegrees, toDegrees);</span><br><span class="line">            iv_arrow.startAnimation(mRotateAnimation);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>写到这儿，下拉刷新的方法基本完成，在下一步就是在主Activity中创建监听，在自定义ListView中实现回调接口，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 创建是否刷新的监听</span><br><span class="line">    */</span><br><span class="line">   public void setOnRefreshStateListener(OnRefreshStateListener listener) &#123;</span><br><span class="line">       mOnRefreshStateListener = listener;</span><br><span class="line">   &#125;</span><br><span class="line">/**</span><br><span class="line">    * 定义正在刷新回调接口</span><br><span class="line">    */</span><br><span class="line">   public interface OnRefreshStateListener &#123;</span><br><span class="line">       void OnRefresh();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p> 主Activity中调用监听方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">pplv_test.setOnRefreshStateListener(new PullPushListView.OnRefreshStateListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void OnRefresh() &#123;</span><br><span class="line">                handler.postDelayed(new Runnable() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void run() &#123;</span><br><span class="line">                        objects.add(0, &quot;卧槽，刷新出来了&quot;);</span><br><span class="line">                        adapter.notifyDataSetChanged();</span><br><span class="line">                        pplv_test.refreshComplement();//通知控件刷新操作已经完成</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;, 3000);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<hr>
+<p>##华丽分割线</p>
+<hr>
+<p>第二部分：实现上拉加载，同样的原理使用padding隐藏，不过要注意的是，同样使用-padding数值，因为 -数值才能类似于隐藏效果</p>
+<hr>
+<p>2.1 footerView的布局效果，布局没什么好说的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:gravity=&quot;center&quot;</span><br><span class="line">    android:orientation=&quot;horizontal&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;ProgressBar</span><br><span class="line">        android:id=&quot;@+id/pb_loadmore&quot;</span><br><span class="line">        style=&quot;@android:style/Widget.ProgressBar.Small&quot;</span><br><span class="line">        android:layout_width=&quot;25dp&quot;</span><br><span class="line">        android:layout_height=&quot;25dp&quot;</span><br><span class="line">        android:layout_marginBottom=&quot;13dp&quot;</span><br><span class="line">        android:layout_marginTop=&quot;13dp&quot;</span><br><span class="line">        android:indeterminateDrawable=&quot;@drawable/progress_medium_white&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_marginLeft=&quot;10dp&quot;</span><br><span class="line">        android:text=&quot;加载更多&quot;</span><br><span class="line">        android:textColor=&quot;#ff0000&quot;</span><br><span class="line">        android:textSize=&quot;17sp&quot; /&gt;</span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>2.2  初始化footerView 数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 添加尾部头目，加载更多</span><br><span class="line">    */</span><br><span class="line">   private void initFooterView() &#123;</span><br><span class="line">       //打气筒添加布局</span><br><span class="line">       footerView = View.inflate(getContext(), R.layout.item_footerview, null);</span><br><span class="line">       //获取测量的宽高</span><br><span class="line">       footerView.measure(0, 0);</span><br><span class="line">       footerViewHeight = footerView.getMeasuredHeight();</span><br><span class="line">       int top = -footerViewHeight;</span><br><span class="line">       //设定初始padding的位置</span><br><span class="line">       initHideFooterView(top);</span><br><span class="line">       //将布局添加到Listview 中</span><br><span class="line">       super.addFooterView(footerView);</span><br><span class="line">       super.setOnScrollListener(new OnScrollListener() &#123;</span><br><span class="line">           @Override</span><br><span class="line">           public void onScrollStateChanged(AbsListView view, int scrollState) &#123;</span><br><span class="line">               //如果滑动状态为空闲，且滑动到了最后一条条目</span><br><span class="line">               if (scrollState == OnScrollListener.SCROLL_STATE_IDLE &amp;&amp; getLastVisiblePosition() == getCount() - 1 &amp;&amp; !loadState) &#123;</span><br><span class="line">                   setSelection(getCount() - 1);//设定选择最后一条条目</span><br><span class="line">                   initHideFooterView(0);</span><br><span class="line">                   loadState = true;</span><br><span class="line">                   mOnLoadStateListener.onLoadState();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           @Override</span><br><span class="line">           public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) &#123;</span><br><span class="line"></span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 动态设定FooterView的Padding</span><br><span class="line">    *</span><br><span class="line">    * @param top 动态设定</span><br><span class="line">    */</span><br><span class="line">   private void initHideFooterView(int top) &#123;</span><br><span class="line">       footerView.setPadding(0, top, 0, 0);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br></pre></td></tr></table></figure>
+<p>2.3 这里上拉刷新的操作不再OnTouch（）中实现了，我们在OnscrollListener()方法中实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">super.setOnScrollListener(new OnScrollListener() &#123;</span><br><span class="line">           @Override</span><br><span class="line">           public void onScrollStateChanged(AbsListView view, int scrollState) &#123;</span><br><span class="line">               //如果滑动状态为空闲，且滑动到了最后一条条目</span><br><span class="line">               if (scrollState == OnScrollListener.SCROLL_STATE_IDLE &amp;&amp; getLastVisiblePosition() == getCount() - 1 &amp;&amp; !loadState) &#123;</span><br><span class="line">                   setSelection(getCount() - 1);//设定选择最后一条条目</span><br><span class="line">                   initHideFooterView(0);</span><br><span class="line">                   loadState = true;</span><br><span class="line">                   mOnLoadStateListener.onLoadState();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           @Override</span><br><span class="line">           public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) &#123;</span><br><span class="line"></span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br></pre></td></tr></table></figure>
+<p>2.4 实现接口回调，以及在主Activity中实现监听</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 创建是否加载更多的刷新</span><br><span class="line">     */</span><br><span class="line">    public void setOnLoadStateListener(onLoadStateListener listener) &#123;</span><br><span class="line">        mOnLoadStateListener = listener;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 完成加载，修改状态</span><br><span class="line">     */</span><br><span class="line">    public void loadComplement() &#123;</span><br><span class="line">        initHideFooterView(-footerViewHeight);</span><br><span class="line">        loadState = false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 定义正在加载的回调接口</span><br><span class="line">     */</span><br><span class="line">    public interface onLoadStateListener &#123;</span><br><span class="line">        void onLoadState();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>主方法中创建加载监听</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">pplv_test.setOnLoadStateListener(new PullPushListView.onLoadStateListener() &#123;</span><br><span class="line">           @Override</span><br><span class="line">           public void onLoadState() &#123;</span><br><span class="line">               handler.postDelayed(new Runnable() &#123;</span><br><span class="line">                   @Override</span><br><span class="line">                   public void run() &#123;</span><br><span class="line">                       objects.add(&quot;卧槽，加载出来了&quot;);</span><br><span class="line">                       adapter.notifyDataSetChanged();</span><br><span class="line">                       pplv_test.loadComplement();//通知控件刷新操作已经完成</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;, 3000);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/oblivion0001/AndroidStudioProjects/tree/master/Test/pull_push_listview" target="_blank" rel="noopener">github源码地址</a></p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/">自定义控件——ListView下拉刷新和上拉加载</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Oblivion 的个人博客">Oblivion</a></p>
+        <p><span>发布时间:</span>2016年10月26日 - 22时52分</p>
+        <p><span>最后更新:</span>2016年10月26日 - 22时52分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/" title="自定义控件——ListView下拉刷新和上拉加载">http://skyrim.me/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://skyrim.me/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/　　作者: Oblivion" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/10/27/自定义实现侧滑菜单/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          自定义实现侧滑菜单
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/23/继承View自定义开关控件/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">继承View自定义开关控件</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/10/27/自定义实现侧滑菜单/" title="上一篇: 自定义实现侧滑菜单">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/10/23/继承View自定义开关控件/" title="下一篇: 继承View自定义开关控件">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python构建安装模块/">Python 构建安装模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python飞机大战/">Python 飞机大战</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/XShell连接Linux/">XShell连接Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/无法连接Mks套接字尝试次数太多/">无法连接Mks套接字尝试次数太多</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/关于Vue-cli跨域问题/">关于Vue-cli 跨域问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/TP5 使用php7出现no input file specified问题/">TP5 使用php7出现no input file specified问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/17/注解代替枚举/">注解代替枚举</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/07/PHP Exception not found/">PHP Exception not found</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go package & import/">Go package & import</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go 闭包写法解析/">Go 闭包写法解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/07/Vue Component 父子组件及组件选项/">Vue Component 父子组件及组件选项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/26/React Native 嵌入到原生应用/">React Native 嵌入到原生应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/Android Studio Build 错误/">Android Studio Build 错误</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/Sophix热修复问题以及加固/">Sophix热修复问题以及加固</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/kotlin.KotlinNullPointerException/">kotlin.KotlinNullPointerException</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/Android 缩略图工具/">Android 缩略图工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/10/Kotlin 的 接口.class实现书写方式/">Kotlin 的 接口.class实现书写方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/ToSlideProgressBar/">ToSlideProgressBar</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/AndroidStudio 预览Layout 问题/">AndroidStudio 预览Layout 问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/OpenGL学习/">OpenGL学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/类似支付宝禁止截屏/">类似支付宝禁止截屏</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/PHP学习记录/">PHP学习记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/融云自定义消息注意事项/">融云自定义消息注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/25/快速点击事件问题处理(多次点击)/">快速点击事件问题处理（多次点击）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/卡片翻转，动画闪烁问题修复/">卡片翻转，动画闪烁问题修复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/21/Gradle 加载别人家的项目/">Gradle 加载别人家的项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/RecyclerView 结合 卡片翻转效果/">RecyclerView 结合 卡片翻转效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Android 6.0 通讯录及RecyclerView 复用错乱Bug/">Android 6.0 通讯录及RecyclerView 复用错乱Bug</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案/">RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/OkhttpUtils的Cookie存储问题/">OkhttpUtils的Cookie存储问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/nodejs Java SSH Git ADB 全局配置/">nodejs Java SSH Git ADB 全局配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/09/Dagger2的空指针解决/">Dagger2的空指针解决</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/sectionRecycle的坑/">sectionRecycle的坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/06/MakeDown/">MakeDown</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Android-Zxing-lib实现二维码扫描及生成/">Android-Zxing-lib实现二维码扫描及生成</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/RollNum ,滚动数字/">RollNum ,滚动数字（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android Crash框架Recovery/">Android Crash框架Recovery</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android studio 混淆/">Android studio 混淆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/OkHttp java.net.SocketTimeoutException SSL handshake timed out in Android/">OkHttp java.net.SocketTimeoutException:SSL handshake timed out in Android</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/02/Git 一个远程使用的代码管理仓库/">Git 一个远程使用的代码管理仓库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/奇葩问题及注意事项/">奇葩问题及注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/JQuery学习之路-样式篇/">JQuery学习之路-样式篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Android ViewPager画廊效果/">Android ViewPager画廊效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/WebView+EventBus粘性Post实现界面跳转/">WebView+EventBus粘性Post实现界面跳转</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Android 面试/">Android 面试</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/10/Android 自动测试（转载）/">Android 自动测试（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）/">getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/03/Android_JNI实例/">Android_JNI实例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/02/OAuth认证授权流程/">OAuth认证授权流程（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_EventBus3.0/">Android_EventBus3.0</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_过度绘制优化/">Android_过度绘制优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/RecycleView不同类型Item&添加HeaderView&条目点击事件/">RecycleView不同类型Item&添加HeaderView&条目点击事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/Android热修复原理（HotFix）初涉/">Android热修复原理（HotFix）初涉</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/Theme切换（主题切换）/">Theme切换（主题切换）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/HelloCharts的简单Demo/">HelloCharts的简单Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/SpannableString的四种常用方式/">SpannableString的四种常用方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/富文本SpannableString/">富文本SpannableString（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/23种设计模式/">23种设计模式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/Activity的六种关闭方式/">Activity的六种关闭方式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android_RxJava + Retrofit + MVP雏形/">Android_RxJava + Retrofit + MVP雏形</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android 与JavaScript的交互/">Android 与JavaScript的交互</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/TabLayout + ViewPager + Fragment 实现动态框架/">TabLayout + ViewPager + Fragment 实现动态框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/Android MVP+Adapter+ViewHolder抽取-ListView最终优化/">Android MVP+Adapter+ViewHolder抽取-ListView最终优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/MVP设计思想-及MVP实现小Demo/">MVP设计思想-及MVP实现小Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/自用简单的一些小Utils/">自用简单的一些小Utils</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-视觉特效/">自定义控件-视觉特效</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件实现快速索引，字典排序/">自定义控件实现快速索引，字典排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/">自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-侧滑菜单/">自定义控件-侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/自定义实现侧滑菜单/">自定义实现侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/">自定义控件——ListView下拉刷新和上拉加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/23/继承View自定义开关控件/">继承View自定义开关控件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿优酷界面/">自定义仿优酷界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿ViewParger无限循环滑动界面/">自定义仿ViewParger无限循环滑动界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上/">简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/Android中加载大图片放置OOM异常/">Android中加载大图片放置OOM异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/明文获取MD5加密文/">明文获取MD5加密文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/抽取类实现左右滑动Activity,及滑动简单动画/">抽取类实现左右滑动Activity,及滑动简单动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/01/Hexo博客模板/">Hexo 博客模板</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Oblivion
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

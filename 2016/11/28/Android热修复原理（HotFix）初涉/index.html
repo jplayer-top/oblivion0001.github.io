@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android热修复原理（HotFix）初涉 | Skyrim | Top</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="写在最前的话，一直听说热修复，不错，最近修复风靡，不明白原理都不行，明白原理了不会用也不行，故打算拿出一些时间去深入了解一番 翻阅众多资料 在此之前先感谢前人的资料提供， 好了 大家和我一起学...">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android热修复原理（HotFix）初涉">
+<meta property="og:url" content="http://skyrim.me/2016/11/28/Android热修复原理（HotFix）初涉/index.html">
+<meta property="og:site_name" content="Skyrim | Top">
+<meta property="og:description" content="写在最前的话，一直听说热修复，不错，最近修复风靡，不明白原理都不行，明白原理了不会用也不行，故打算拿出一些时间去深入了解一番 翻阅众多资料 在此之前先感谢前人的资料提供， 好了 大家和我一起学...">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20161128171836347">
+<meta property="og:image" content="http://img.blog.csdn.net/20161128184731044">
+<meta property="og:updated_time" content="2016-11-28T13:06:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android热修复原理（HotFix）初涉">
+<meta name="twitter:description" content="写在最前的话，一直听说热修复，不错，最近修复风靡，不明白原理都不行，明白原理了不会用也不行，故打算拿出一些时间去深入了解一番 翻阅众多资料 在此之前先感谢前人的资料提供， 好了 大家和我一起学...">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161128171836347">
+  
+    <link rel="alternative" href="/atom.xml" title="Skyrim | Top" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Oblivion</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">我的简历</a></li>
+                        
+                            <li><a href="/FrontEndGuide">酷站导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 12px;">Android Studio</a> <a href="/tags/GO/" style="font-size: 12px;">GO</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Kotlin/" style="font-size: 12px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/OpenGL/" style="font-size: 10px;">OpenGL</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/ReactNative/" style="font-size: 10px;">ReactNative</a> <a href="/tags/TP5/" style="font-size: 10px;">TP5</a> <a href="/tags/Vue/" style="font-size: 12px;">Vue</a> <a href="/tags/XShell/" style="font-size: 10px;">XShell</a> <a href="/tags/前端/" style="font-size: 12px;">前端</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 18px;">异常</a> <a href="/tags/控件/" style="font-size: 10px;">控件</a> <a href="/tags/杂项/" style="font-size: 18px;">杂项</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/热修复/" style="font-size: 10px;">热修复</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://luuman.github.io/">name</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">随便写写，写下一段传奇</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Oblivion</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Oblivion</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">我的简历</a></li>
+                
+                    <li><a href="/FrontEndGuide">酷站导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Android热修复原理（HotFix）初涉" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/28/Android热修复原理（HotFix）初涉/" class="article-date">
+      <time datetime="2016-11-28T13:06:28.000Z" itemprop="datePublished">2016-11-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android热修复原理（HotFix）初涉
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>####<strong>先来添加个头玩玩</strong></p>
+<p>写在最前的话，一直听说热修复，不错，最近修复风靡，不明白原理都不行，明白原理了不会用也不行，故打算拿出一些时间去深入了解一番<br>翻阅众多资料<br>在此之前先感谢前人的资料提供，<br>好了<br>大家和我一起学习吧；</p>
+<ul>
+<li>首先明白几个类的加载器:classLoader—-&gt;顾名思义，就是用来动态装载class文件的。标准的Java SDK中有个ClassLoader类，借助此类可以装载需要的class文件，前提是ClassLoader类初始化必须制定class文件的路径。<br>URLClassLoader,<br>PathClassLoader,<br>DexLoader<br>三个加载器使用不同，首先URLClassLoader是不能使用在Android上</li>
+</ul>
+<p>PathClassLoader是在APK文件生成之后，及在/data/dalvik/cache文件中存在的，假如文件不存在的话就会爆出ClassNoFindException*()</p>
+<p>那最后一个DexClassLoader根据我翻阅资料来看，应该就是基于它了<br>好接下来我们了解一下名词解析</p>
+<p>什么是dex :  dex文件是Android平台上可执行文件的类型。这时候我百度的时候出现了一个面试题<br>这里我简单提及一下，了解的小伙伴可以跳过，不了解的可以点击看一下<a href="https://zhidao.baidu.com/question/1990600809932485307.html" target="_blank" rel="noopener"><strong><em>dex文件和jar文件的区别是什么</em></strong></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">区别一：dvm执行的是.dex格式文件  jvm执行的是.class文件   android程序编译完之后生产.class文件，然后，dex工具会把.class文件处理成.dex文件，然后把资源文件和.dex文件等打包成.apk文件。apk就是android package的意思。 jvm执行的是.class文件。</span><br><span class="line">区别二:dvm是基于寄存器的虚拟机  而jvm执行是基于虚拟栈的虚拟机。寄存器存取速度比栈快的多，dvm可以根据硬件实现最大的优化，比较适合移动设备。</span><br><span class="line">区别三：.class文件存在很多的冗余信息，dex工具会去除冗余信息，并把所有的.class文件整合到.dex文件中。减少了I/O操作，提高了类的查找速度</span><br></pre></td></tr></table></figure></p>
+<p>接下来他妈的又有问题了，<a href="http://wenku.baidu.com/link?url=GoVg_HEYoZqVfeef1W4AwufMnvzWmx_RIVUJFjOYFjkKxoORKvAFMYbZRN0tsTn_QS9AU14VRVdwZayzmfXhG9edP9w1tNh6gP2m7wI_T0K" target="_blank" rel="noopener">dvm和jvm的区别</a><br><img src="http://img.blog.csdn.net/20161128171836347" alt="这里写图片描述"></p>
+<p>嘿，突然发现我居然看懂了，这不就是dex和jar的区别吗，不是同一个名词，但是意思大体一致，为啥，你看呀jar只是将.class文件集成<br>而我们dex是将.class和资源文件转化成.dex，有木有明白了这几个名词。</p>
+<p>好，接下来我们介绍一下DexClassLoder();首先它有一个4个参数的构找方法<img src="http://img.blog.csdn.net/20161128184731044" alt="这里写图片描述"><br>dexPath 是jar,dex文件所在的路径<br>optimizedDirectory 是得到的dex的文件解压后放置的位置<br>libraryPath 是文件的library的存放路径，may be null 可是是空啊<br>parent 父类构造器</p>
+<p>讲到这儿其实我们应该有明白，我们其实就是要拿DexClassLoader去进行加载在dexElements遍历之前，去做我们的操作，此时我们还不懂怎么去工作，小伙伴，不要慌，这里我给出一个链接，看完试试能不能明白<a href="http://www.tuicool.com/articles/AJRFvu" target="_blank" rel="noopener">DexClassLoader的使用原理</a><br>dexElements：明白这是啥玩意不，看完再点击上边的链接哈，其中每个dex文件是一个Element，当需要加载类的时候会遍历 dexElements，如果找到类则加载，如果找不到从下一个 dex 文件继续查找。<br>File.separator 小知识补充（就相当与windows下的“/”Linux下的“\”）</p>
+<p>看完回来了，源码真心看不懂，恶心，，我先去吐会，等会回来再说</p>
+<p>没看懂，，再去看一会</p>
+<hr>
+<p>好了，看得差不多了，其实主要是我们跟踪源码的走向一步一步明白到底去干了什么，不必要知道每一个方法的意义，只要知道他怎么去处理的数据，我在这里就不再赘述了，我们看一下链接中文章的作者对这个DexClassLoader加载的理解，其实静下心来能够看明白的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">我们可以简要总结下整个的加载流程，首先是对文件名的修正，后缀名置为”.dex”作为输出文件，然后生个一个DexPathList对象函数直接返回一个DexPathList对象，</span><br><span class="line"></span><br><span class="line">在DexPathList的构造函数中调用makeDexElements()函数，在makeDexElement()函数中调用loadDexFile()开始对.dex或者是.jar .zip .apk文件进行处理，</span><br><span class="line"></span><br><span class="line">跟入loadDexFile()函数中，会发现里面做的工作很简单，调用optimizedPathFor()函数对optimizedDiretcory路径进行修正。</span><br><span class="line"></span><br><span class="line">之后才真正通过DexFile.loadDex()开始加载文件中的数据，其中的加载也只是返回一个DexFile对象。</span><br><span class="line"></span><br><span class="line">在DexFile类的构造函数中，重点便放在了其调用的openDexFile()函数，在openDexFile()中调用了openDexFileNative()真正进入native层，</span><br><span class="line"></span><br><span class="line">在openDexFileNative()的真正实现中，对于后缀名为.dex的文件或者其他文件(.jar .apk .zip)分开进行处理：</span><br><span class="line"></span><br><span class="line">.dex文件调用dvmRawDexFileOpen()；其他文件调用dvmJarFileOpen()。</span><br><span class="line"></span><br><span class="line">在dvmRawDexFileOpen()函数中，检验dex文件的标志，检验odex文件的缓存名称，之后将dex文件拷贝到odex文件中，并对odex进行优化</span><br><span class="line"></span><br><span class="line">调用dvmDexFileOpenFromFd()对优化后的odex文件进行映射，通过mprotect置为&quot;只读&quot;属性并将映射的内存结构保存在DvmDex*结构中。</span><br><span class="line"></span><br><span class="line">dvmJarFileOpen()先对文件进行映射，结构保存在ZipArchive中，然后再尝试以文件名作为dex文件名来“打开”文件，</span><br><span class="line"></span><br><span class="line">如果失败，则调用dexZipFindEntry在ZipArchive的名称hash表中找名为&quot;class.dex&quot;的文件,然后创建odex文件，下面就和</span><br><span class="line"></span><br><span class="line">dvmRawDexFileOpen()一样了，就是对dex文件进行优化和映射。</span><br></pre></td></tr></table></figure>
+<hr>
+<p>有没有很开心，最起码懂了一点什么，那我们继续我们的主线</p>
+<p>有上边那些我们知道了dex是根据.class文件转化过来的，然后又经dex转化成了odex，而 dex -&gt; odex 则是针对不同平台，不同手机的硬件配置做针对性的优化。就是在这一过程中，虚拟机在启动优化的时候，会有一个选项就是 verify 选项，当 verify 选项被打开的时候，就会执行一次校验，校验的目的是为了判断，这个类是否有引用其他 dex 中的类，如果没有，那么这个类会被打上一个 CLASS_ISPREVERIFIED 的标志。一旦被打上这个标志，就无法再从其他 dex 中替换这个类了。而这个选项开启，则是由虚拟机控制的。</p>
+<hr>
+<p>下一步<br>知道大体意思了，但是不明白怎么去操作这东西，有没有力不从心的感觉，马丹，意味着我还要继续看下去<br>可是，我发现我看跑题了，看到了一个插件制作的小Demo,卧槽，我还是决定提出来，因为这个看完你能更明白DexClassLoader的工作原理<br><a href="http://www.tuicool.com/articles/FneqEjz" target="_blank" rel="noopener">插件架构Demo</a><br><a href="http://www.kymjs.com/code/2016/05/08/01" target="_blank" rel="noopener">代码简单说明</a><br><a href="https://zhuanlan.zhihu.com/p/20308548?columnSlug=magilu" target="_blank" rel="noopener">热修复的详解</a></p>
+<p>###来个结尾：<strong>你可以告诉别人你懂原理了，牛逼否</strong><br>看了这么一圈终于知道原理了，当别人问起来你对HotFix的理解的时候，你可以潇洒的说<br>1，三个ClassLoader的区别，我们采用那个DexClassLoader加载器进行加载<br>2，这个DexClassLoader有一个四个参数的构造函数，</p>
+<ul>
+<li>对应着jar,class文件所在的文件位置，</li>
+<li>对应着要指定获取到的dex文件放置的位置，</li>
+<li>对应本地文件C，C++ 等本地文件的放置位置，一般设定为null</li>
+<li>获取到父类加载器，等等我们是看过源码的淫，这里可以来点文章<br>3，对dex和jar的区别来点事，dex是将dvm将.class文件和资源文件加载成.dex，而那jar是jvm将.class 文件转为.jar.<br>4，DexClassLoader的工作原理是根据传入的路径获取到dex,如果不是dex的话源码中处理方式，比如讲不是.dex的结尾文件装华为.dex，是的就直接返回进行loadDex()；<br>5，上边扯了这么大牛逼，我们回归正题，如何进行热修复，DexClassLoader是将获取到一个DexEleMents[]的数组，进行遍历，这样就好办了不是，数组是可以添加删除的，嘿嘿，在他遍历之前我们对数组添加，这不就解决了吗，至于真么添加，根据宿主App,拿到App中的所有类，这里我们对类进行过滤，拿到需要实现的类，通过ClassReader，ClassWriter,ClassVIstor,去操作这个字节码文件<br>6，这里会引出一个问题，就是我们的App都是经过混淆之后发布的，所以这里我们呢，就可以在发布BUG版本保存的，在 Gradle 插件编译过程中，有一个proguardTask，看名字应该就知道他是负责 proguard 任务的，我们可以保存首次执行时的混淆规则(也就是线上出BUG的包)，这个混淆规则保存在工程目录中的一个mapping文件，当我们需要执行热修复补丁生成的时候，将线上包的mapping规则拿出来应用到本次编译中，就可以生成混淆后的类跟线上混淆后的类相同的类名的补丁了。</li>
+</ul>
+<hr>
+<p>####<strong><em>说在最后的话，大哥大姐过年好啊，转载之前给个赞啊</em></strong></p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/28/Android热修复原理（HotFix）初涉/">Android热修复原理（HotFix）初涉</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Oblivion 的个人博客">Oblivion</a></p>
+        <p><span>发布时间:</span>2016年11月28日 - 21时06分</p>
+        <p><span>最后更新:</span>2016年11月28日 - 21时06分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/28/Android热修复原理（HotFix）初涉/" title="Android热修复原理（HotFix）初涉">http://skyrim.me/2016/11/28/Android热修复原理（HotFix）初涉/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://skyrim.me/2016/11/28/Android热修复原理（HotFix）初涉/　　作者: Oblivion" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/11/30/RecycleView不同类型Item&添加HeaderView&条目点击事件/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          RecycleView不同类型Item&amp;添加HeaderView&amp;条目点击事件
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/27/Theme切换（主题切换）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Theme切换（主题切换）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/30/RecycleView不同类型Item&添加HeaderView&条目点击事件/" title="上一篇: RecycleView不同类型Item&amp;添加HeaderView&amp;条目点击事件">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/11/27/Theme切换（主题切换）/" title="下一篇: Theme切换（主题切换）">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python构建安装模块/">Python 构建安装模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python飞机大战/">Python 飞机大战</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/XShell连接Linux/">XShell连接Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/无法连接Mks套接字尝试次数太多/">无法连接Mks套接字尝试次数太多</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/关于Vue-cli跨域问题/">关于Vue-cli 跨域问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/TP5 使用php7出现no input file specified问题/">TP5 使用php7出现no input file specified问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/17/注解代替枚举/">注解代替枚举</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/07/PHP Exception not found/">PHP Exception not found</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go package & import/">Go package & import</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go 闭包写法解析/">Go 闭包写法解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/07/Vue Component 父子组件及组件选项/">Vue Component 父子组件及组件选项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/26/React Native 嵌入到原生应用/">React Native 嵌入到原生应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/Android Studio Build 错误/">Android Studio Build 错误</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/Sophix热修复问题以及加固/">Sophix热修复问题以及加固</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/kotlin.KotlinNullPointerException/">kotlin.KotlinNullPointerException</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/Android 缩略图工具/">Android 缩略图工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/10/Kotlin 的 接口.class实现书写方式/">Kotlin 的 接口.class实现书写方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/ToSlideProgressBar/">ToSlideProgressBar</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/AndroidStudio 预览Layout 问题/">AndroidStudio 预览Layout 问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/OpenGL学习/">OpenGL学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/类似支付宝禁止截屏/">类似支付宝禁止截屏</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/PHP学习记录/">PHP学习记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/融云自定义消息注意事项/">融云自定义消息注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/25/快速点击事件问题处理(多次点击)/">快速点击事件问题处理（多次点击）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/卡片翻转，动画闪烁问题修复/">卡片翻转，动画闪烁问题修复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/21/Gradle 加载别人家的项目/">Gradle 加载别人家的项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/RecyclerView 结合 卡片翻转效果/">RecyclerView 结合 卡片翻转效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Android 6.0 通讯录及RecyclerView 复用错乱Bug/">Android 6.0 通讯录及RecyclerView 复用错乱Bug</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案/">RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/OkhttpUtils的Cookie存储问题/">OkhttpUtils的Cookie存储问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/nodejs Java SSH Git ADB 全局配置/">nodejs Java SSH Git ADB 全局配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/09/Dagger2的空指针解决/">Dagger2的空指针解决</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/sectionRecycle的坑/">sectionRecycle的坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/06/MakeDown/">MakeDown</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Android-Zxing-lib实现二维码扫描及生成/">Android-Zxing-lib实现二维码扫描及生成</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/RollNum ,滚动数字/">RollNum ,滚动数字（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android Crash框架Recovery/">Android Crash框架Recovery</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android studio 混淆/">Android studio 混淆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/OkHttp java.net.SocketTimeoutException SSL handshake timed out in Android/">OkHttp java.net.SocketTimeoutException:SSL handshake timed out in Android</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/02/Git 一个远程使用的代码管理仓库/">Git 一个远程使用的代码管理仓库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/奇葩问题及注意事项/">奇葩问题及注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/JQuery学习之路-样式篇/">JQuery学习之路-样式篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Android ViewPager画廊效果/">Android ViewPager画廊效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/WebView+EventBus粘性Post实现界面跳转/">WebView+EventBus粘性Post实现界面跳转</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Android 面试/">Android 面试</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/10/Android 自动测试（转载）/">Android 自动测试（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）/">getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/03/Android_JNI实例/">Android_JNI实例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/02/OAuth认证授权流程/">OAuth认证授权流程（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_EventBus3.0/">Android_EventBus3.0</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_过度绘制优化/">Android_过度绘制优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/RecycleView不同类型Item&添加HeaderView&条目点击事件/">RecycleView不同类型Item&添加HeaderView&条目点击事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/Android热修复原理（HotFix）初涉/">Android热修复原理（HotFix）初涉</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/Theme切换（主题切换）/">Theme切换（主题切换）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/HelloCharts的简单Demo/">HelloCharts的简单Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/SpannableString的四种常用方式/">SpannableString的四种常用方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/富文本SpannableString/">富文本SpannableString（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/23种设计模式/">23种设计模式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/Activity的六种关闭方式/">Activity的六种关闭方式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android_RxJava + Retrofit + MVP雏形/">Android_RxJava + Retrofit + MVP雏形</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android 与JavaScript的交互/">Android 与JavaScript的交互</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/TabLayout + ViewPager + Fragment 实现动态框架/">TabLayout + ViewPager + Fragment 实现动态框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/Android MVP+Adapter+ViewHolder抽取-ListView最终优化/">Android MVP+Adapter+ViewHolder抽取-ListView最终优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/MVP设计思想-及MVP实现小Demo/">MVP设计思想-及MVP实现小Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/自用简单的一些小Utils/">自用简单的一些小Utils</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-视觉特效/">自定义控件-视觉特效</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件实现快速索引，字典排序/">自定义控件实现快速索引，字典排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/">自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-侧滑菜单/">自定义控件-侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/自定义实现侧滑菜单/">自定义实现侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/">自定义控件——ListView下拉刷新和上拉加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/23/继承View自定义开关控件/">继承View自定义开关控件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿优酷界面/">自定义仿优酷界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿ViewParger无限循环滑动界面/">自定义仿ViewParger无限循环滑动界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上/">简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/Android中加载大图片放置OOM异常/">Android中加载大图片放置OOM异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/明文获取MD5加密文/">明文获取MD5加密文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/抽取类实现左右滑动Activity,及滑动简单动画/">抽取类实现左右滑动Activity,及滑动简单动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/01/Hexo博客模板/">Hexo 博客模板</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Oblivion
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

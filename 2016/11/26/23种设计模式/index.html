@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>23种设计模式（转载） | Skyrim | Top</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="来源：Java开发中的23种设计模式详解 - 退思园 - 博客频道 - CSDN.NET策略模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换，且算法的变化不会影响到使用算法的客户。需要设...">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="23种设计模式（转载）">
+<meta property="og:url" content="http://skyrim.me/2016/11/26/23种设计模式/index.html">
+<meta property="og:site_name" content="Skyrim | Top">
+<meta property="og:description" content="来源：Java开发中的23种设计模式详解 - 退思园 - 博客频道 - CSDN.NET策略模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换，且算法的变化不会影响到使用算法的客户。需要设...">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2016-11-26T11:04:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="23种设计模式（转载）">
+<meta name="twitter:description" content="来源：Java开发中的23种设计模式详解 - 退思园 - 博客频道 - CSDN.NET策略模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换，且算法的变化不会影响到使用算法的客户。需要设...">
+  
+    <link rel="alternative" href="/atom.xml" title="Skyrim | Top" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Oblivion</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">我的简历</a></li>
+                        
+                            <li><a href="/FrontEndGuide">酷站导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 12px;">Android Studio</a> <a href="/tags/GO/" style="font-size: 12px;">GO</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Kotlin/" style="font-size: 12px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/OpenGL/" style="font-size: 10px;">OpenGL</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/ReactNative/" style="font-size: 10px;">ReactNative</a> <a href="/tags/TP5/" style="font-size: 10px;">TP5</a> <a href="/tags/Vue/" style="font-size: 12px;">Vue</a> <a href="/tags/XShell/" style="font-size: 10px;">XShell</a> <a href="/tags/前端/" style="font-size: 12px;">前端</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 18px;">异常</a> <a href="/tags/控件/" style="font-size: 10px;">控件</a> <a href="/tags/杂项/" style="font-size: 18px;">杂项</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/热修复/" style="font-size: 10px;">热修复</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://luuman.github.io/">name</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">随便写写，写下一段传奇</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Oblivion</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Oblivion</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">我的简历</a></li>
+                
+                    <li><a href="/FrontEndGuide">酷站导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-23种设计模式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/26/23种设计模式/" class="article-date">
+      <time datetime="2016-11-26T11:04:14.000Z" itemprop="datePublished">2016-11-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      23种设计模式（转载）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>来源：Java开发中的23种设计模式详解 - 退思园 - 博客频道 - CSDN.NET</p>
+<p>策略模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换，且算法的变化不会影响到使用算法的客户。需要设计一个接口，为一系列实现类提供统一的方法，多个实现类实现该接口，设计一个抽象类（可有可无，属于辅助类），提供辅助函数，关系图如下：</p>
+<p>图中ICalculator提供同意的方法，<br>AbstractCalculator是辅助类，提供辅助方法，接下来，依次实现下每个类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">首先统一接口：</span><br><span class="line">    `````</span><br></pre></td></tr></table></figure>
+<pre><code>`[java] view plaincopy 
+</code></pre><p>1.public interface ICalculator {  </p>
+<ol>
+<li>public int calculate(String exp);<br>3.}<br>辅助类：</li>
+</ol>
+<p>[java] view plaincopy<br>1.public abstract class AbstractCalculator {  </p>
+<ol>
+<li></li>
+<li>public int[] split(String exp,String opt){  </li>
+<li>String array[] = exp.split(opt);  </li>
+<li>int arrayInt[] = new int[2];  </li>
+<li>arrayInt[0] = Integer.parseInt(array[0]);  </li>
+<li>arrayInt[1] = Integer.parseInt(array[1]);  </li>
+<li>return arrayInt;  </li>
+<li>}<br>10.}<br>三个实现类：</li>
+</ol>
+<p>[java] view plaincopy<br>1.public class Plus extends AbstractCalculator implements ICalculator {  </p>
+<ol>
+<li></li>
+<li>@Override  </li>
+<li>public int calculate(String exp) {  </li>
+<li>int arrayInt[] = split(exp,”\+”);  </li>
+<li>return arrayInt[0]+arrayInt[1];  </li>
+<li>}<br>8.}<br>[java] view plaincopy<br>1.public class Minus extends AbstractCalculator implements ICalculator {  </li>
+<li></li>
+<li>@Override  </li>
+<li>public int calculate(String exp) {  </li>
+<li>int arrayInt[] = split(exp,”-“);  </li>
+<li>return arrayInt[0]-arrayInt[1];  </li>
+<li>}  </li>
+<li>9.}<br>[java] view plaincopy<br>1.public class Multiply extends AbstractCalculator implements ICalculator {  </li>
+<li></li>
+<li>@Override  </li>
+<li>public int calculate(String exp) {  </li>
+<li>int arrayInt[] = split(exp,”\*”);  </li>
+<li>return arrayInt[0]*arrayInt[1];  </li>
+<li>}<br>8.}<br>简单的测试类：</li>
+</ol>
+<p>[java] view plaincopy<br>1.public class StrategyTest {  </p>
+<ol>
+<li></li>
+<li>public static void main(String[] args) {  </li>
+<li>String exp = “2+8”;  </li>
+<li>ICalculator cal = new Plus();  </li>
+<li>int result = cal.calculate(exp);  </li>
+<li>System.out.println(result);  </li>
+<li>}<br>9.}<br>输出：10`</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">策略模式的决定权在用户，系统本身提供不同算法的实现，新增或者删除算法，对各种算法做封装。因此，策略模式多用在算法决策系统中，外部用户只需要决定用哪个算法即可。</span><br><span class="line"></span><br><span class="line">--------</span><br><span class="line">单例对象（Singleton）是一种常用的设计模式。在Java应用中，单例对象能保证在一个JVM中，该对象只有一个实例存在。这样的模式有几个好处：</span><br><span class="line"></span><br><span class="line">1、某些类创建比较频繁，对于一些大型的对象，这是一笔很大的系统开销。</span><br><span class="line"></span><br><span class="line">2、省去了new操作符，降低了系统内存的使用频率，减轻GC压力。</span><br><span class="line"></span><br><span class="line">3、有些类如交易所的核心交易引擎，控制着交易流程，如果该类可以创建多个的话，系统完全乱了。（比如一个军队出现了多个司令员同时指挥，肯定会乱成一团），所以只有使用单例模式，才能保证核心交易服务器独立控制整个流程。</span><br><span class="line"></span><br><span class="line">首先我们写一个简单的单例类：</span><br></pre></td></tr></table></figure>
+<p>[java] view plaincopy<br>1.public class Singleton {  </p>
+<ol>
+<li></li>
+<li>/<em> 持有私有静态实例，防止被引用，此处赋值为null，目的是实现延迟加载 </em>/  </li>
+<li>private static Singleton instance = null;  </li>
+<li></li>
+<li>/<em> 私有构造方法，防止被实例化 </em>/  </li>
+<li>private Singleton() {  </li>
+<li>}  </li>
+<li></li>
+<li>/<em> 静态工程方法，创建实例 </em>/  </li>
+<li>public static Singleton getInstance() {  </li>
+<li>if (instance == null) {  </li>
+<li>instance = new Singleton();  </li>
+<li>}  </li>
+<li>return instance;  </li>
+<li>}  </li>
+<li></li>
+<li>/<em> 如果该对象被用于序列化，可以保证对象在序列化前后保持一致 </em>/  </li>
+<li>public Object readResolve() {  </li>
+<li>return instance;  </li>
+<li>}<br>22.}  </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">这个类可以满足基本要求，但是，像这样毫无线程安全保护的类，如果我们把它放入多线程的环境下，肯定就会出现问题了，如何解决？我们首先会想到对getInstance方法加synchronized关键字，如下：</span><br></pre></td></tr></table></figure>
+<p>[java] view plaincopy<br>1.public static synchronized Singleton getInstance() {  </p>
+<ol>
+<li>if (instance == null) {  </li>
+<li>instance = new Singleton();  </li>
+<li>}  </li>
+<li>return instance;  </li>
+<li>}  </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">但是，synchronized关键字锁住的是这个对象，这样的用法，在性能上会有所下降，因为每次调用getInstance()，都要对对象上锁，事实上，只有在第一次创建对象的时候需要加锁，之后就不需要了，所以，这个地方需要改进。我们改成下面这个：</span><br></pre></td></tr></table></figure>
+<p>[java] view plaincopy<br>1.public static Singleton getInstance() {  </p>
+<ol>
+<li>if (instance == null) {  </li>
+<li>synchronized (instance) {  </li>
+<li>if (instance == null) {  </li>
+<li>instance = new Singleton();  </li>
+<li>}  </li>
+<li>}  </li>
+<li>}  </li>
+<li>return instance;  </li>
+<li>}  </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">似乎解决了之前提到的问题，将synchronized关键字加在了内部，也就是说当调用的时候是不需要加锁的，只有在instance为null，并创建对象的时候才需要加锁，性能有一定的提升。但是，这样的情况，还是有可能有问题的，看下面的情况：在Java指令中创建对象和赋值操作是分开进行的，也就是说instance = new Singleton();语句是分两步执行的。但是JVM并不保证这两个操作的先后顺序，也就是说有可能JVM会为新的Singleton实例分配空间，然后直接赋值给instance成员，然后再去初始化这个Singleton实例。这样就可能出错了，我们以A、B两个线程为例：</span><br><span class="line"></span><br><span class="line">a&gt;A、B线程同时进入了第一个if判断</span><br><span class="line"></span><br><span class="line">b&gt;A首先进入synchronized块，由于instance为null，所以它执行instance = new Singleton();</span><br><span class="line"></span><br><span class="line">c&gt;由于JVM内部的优化机制，JVM先画出了一些分配给Singleton实例的空白内存，并赋值给instance成员（注意此时JVM没有开始初始化这个实例），然后A离开了synchronized块。</span><br><span class="line"></span><br><span class="line">d&gt;B进入synchronized块，由于instance此时不是null，因此它马上离开了synchronized块并将结果返回给调用该方法的程序。</span><br><span class="line"></span><br><span class="line">e&gt;此时B线程打算使用Singleton实例，却发现它没有被初始化，于是错误发生了。</span><br><span class="line"></span><br><span class="line">所以程序还是有可能发生错误，其实程序在运行过程是很复杂的，从这点我们就可以看出，尤其是在写多线程环境下的程序更有难度，有挑战性。我们对该程序做进一步优化：</span><br></pre></td></tr></table></figure>
+<p>[java] view plaincopy<br>1.private static class SingletonFactory{           </p>
+<ol>
+<li>private static Singleton instance = new Singleton();           </li>
+<li>}           </li>
+<li>public static Singleton getInstance(){           </li>
+<li>return SingletonFactory.instance;           </li>
+<li>}   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">实际情况是，单例模式使用内部类来维护单例的实现，JVM内部的机制能够保证当一个类被加载的时候，这个类的加载过程是线程互斥的。这样当我们第一次调用getInstance的时候，JVM能够帮我们保证instance只被创建一次，并且会保证把赋值给instance的内存初始化完毕，这样我们就不用担心上面的问题。同时该方法也只会在第一次调用的时候使用互斥机制，这样就解决了低性能问题。这样我们暂时总结一个完美的单例模式：</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>[java] view plaincopy<br>1.public class Singleton {  </p>
+<ol>
+<li></li>
+<li>/<em> 私有构造方法，防止被实例化 </em>/  </li>
+<li>private Singleton() {  </li>
+<li>}  </li>
+<li></li>
+<li>/<em> 此处使用一个内部类来维护单例 </em>/  </li>
+<li>private static class SingletonFactory {  </li>
+<li>private static Singleton instance = new Singleton();  </li>
+<li>}  </li>
+<li></li>
+<li>/<em> 获取实例 </em>/  </li>
+<li>public static Singleton getInstance() {  </li>
+<li>return SingletonFactory.instance;  </li>
+<li>}  </li>
+<li></li>
+<li>/<em> 如果该对象被用于序列化，可以保证对象在序列化前后保持一致 </em>/  </li>
+<li>public Object readResolve() {  </li>
+<li>return getInstance();  </li>
+<li>}<br>21.}  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">其实说它完美，也不一定，如果在构造函数中抛出异常，实例将永远得不到创建，也会出错。所以说，十分完美的东西是没有的，我们只能根据实际情况，选择最适合自己应用场景的实现方法。也有人这样实现：因为我们只需要在创建类的时候进行同步，所以只要将创建和getInstance()分开，单独为创建加synchronized关键字，也是可以的：</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>[java] view plaincopy<br>1.public class SingletonTest {  </p>
+<ol>
+<li></li>
+<li>private static SingletonTest instance = null;  </li>
+<li></li>
+<li>private SingletonTest() {  </li>
+<li>}  </li>
+<li></li>
+<li>private static synchronized void syncInit() {  </li>
+<li>if (instance == null) {  </li>
+<li>instance = new SingletonTest();  </li>
+<li>}  </li>
+<li>}  </li>
+<li></li>
+<li>public static SingletonTest getInstance() {  </li>
+<li>if (instance == null) {  </li>
+<li>syncInit();  </li>
+<li>}  </li>
+<li>return instance;  </li>
+<li>}<br>20.}  </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">考虑性能的话，整个程序只需创建一次实例，所以性能也不会有什么影响。</span><br><span class="line"></span><br><span class="line">补充：采用&quot;影子实例&quot;的办法为单例对象的属性同步更新</span><br></pre></td></tr></table></figure>
+<p>[java] view plaincopy<br>1.public class SingletonTest {  </p>
+<ol>
+<li></li>
+<li>private static SingletonTest instance = null;  </li>
+<li>private Vector properties = null;  </li>
+<li></li>
+<li>public Vector getProperties() {  </li>
+<li>return properties;  </li>
+<li>}  </li>
+<li></li>
+<li>private SingletonTest() {  </li>
+<li>}  </li>
+<li></li>
+<li>private static synchronized void syncInit() {  </li>
+<li>if (instance == null) {  </li>
+<li>instance = new SingletonTest();  </li>
+<li>}  </li>
+<li>}  </li>
+<li></li>
+<li>public static SingletonTest getInstance() {  </li>
+<li>if (instance == null) {  </li>
+<li>syncInit();  </li>
+<li>}  </li>
+<li>return instance;  </li>
+<li>}  </li>
+<li></li>
+<li>public void updateProperties() {  </li>
+<li>SingletonTest shadow = new SingletonTest();  </li>
+<li>properties = shadow.getProperties();  </li>
+<li>}<br>30.}  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">通过单例模式的学习告诉我们：</span><br><span class="line"></span><br><span class="line">1、单例模式理解起来简单，但是具体实现起来还是有一定的难度。</span><br><span class="line"></span><br><span class="line">2、synchronized关键字锁定的是对象，在用的时候，一定要在恰当的地方使用（注意需要使用锁的对象和过程，可能有的时候并不是整个对象及整个过程都需要锁）。</span><br><span class="line"></span><br><span class="line">到这儿，单例模式基本已经讲完了，结尾处，笔者突然想到另一个问题，就是采用类的静态方法，实现单例模式的效果，也是可行的，此处二者有什么不同？</span><br><span class="line"></span><br><span class="line">首先，静态类不能实现接口。（从类的角度说是可以的，但是那样就破坏了静态了。因为接口中不允许有static修饰的方法，所以即使实现了也是非静态的）</span><br><span class="line"></span><br><span class="line">其次，单例可以被延迟初始化，静态类一般在第一次加载是初始化。之所以延迟加载，是因为有些类比较庞大，所以延迟加载有助于提升性能。</span><br><span class="line"></span><br><span class="line">再次，单例类可以被继承，他的方法可以被覆写。但是静态类内部方法都是static，无法被覆写。</span><br><span class="line"></span><br><span class="line">最后一点，单例类比较灵活，毕竟从实现上只是一个普通的Java类，只要满足单例的基本需求，你可以在里面随心所欲的实现一些其它功能，但是静态类不行。从上面这些概括中，基本可以看出二者的区别，但是，从另一方面讲，我们上面最后实现的那个单例模式，内部就是用一个静态类来实现的，所以，二者有很大的关联，只是我们考虑问题的层面不同罢了。两种思想的结合，才能造就出完美的解决方案，就像HashMap采用数组+链表来实现一样，其实生活中很多事情都是这样，单用不同的方法来处理问题，总是有优点也有缺点，最完美的方法是，结合各个方法的优点，才能最好的解决问题！</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">  外观模式是为了解决类与类之家的依赖关系的，像spring一样，可以将类和类之间的关系配置到配置文件中，而外观模式就是将他们的关系放在一个Facade类中，降低了类类之间的耦合度，该模式中没有涉及到接口，看下类图：（我们以一个计算机的启动过程为例）</span><br><span class="line">![pic](http://img.blog.csdn.net/20161126183926768)</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">我们先看下实现类：</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>[java] view plaincopy<br>1.public class CPU {  </p>
+<ol>
+<li></li>
+<li>public void startup(){  </li>
+<li>System.out.println(“cpu startup!”);  </li>
+<li>}  </li>
+<li></li>
+<li>public void shutdown(){  </li>
+<li>System.out.println(“cpu shutdown!”);  </li>
+<li>}<br>10.}<br>[java] view plaincopy<br>1.public class Memory {  </li>
+<li></li>
+<li>public void startup(){  </li>
+<li>System.out.println(“memory startup!”);  </li>
+<li>}  </li>
+<li></li>
+<li>public void shutdown(){  </li>
+<li>System.out.println(“memory shutdown!”);  </li>
+<li>}<br>10.}<br>[java] view plaincopy<br>1.public class Disk {  </li>
+<li></li>
+<li>public void startup(){  </li>
+<li>System.out.println(“disk startup!”);  </li>
+<li>}  </li>
+<li></li>
+<li>public void shutdown(){  </li>
+<li>System.out.println(“disk shutdown!”);  </li>
+<li>}<br>10.}<br>[java] view plaincopy<br>1.public class Computer {  </li>
+<li>private CPU cpu;  </li>
+<li>private Memory memory;  </li>
+<li>private Disk disk;  </li>
+<li></li>
+<li>public Computer(){  </li>
+<li>cpu = new CPU();  </li>
+<li>memory = new Memory();  </li>
+<li>disk = new Disk();  </li>
+<li>}  </li>
+<li></li>
+<li>public void startup(){  </li>
+<li>System.out.println(“start the computer!”);  </li>
+<li>cpu.startup();  </li>
+<li>memory.startup();  </li>
+<li>disk.startup();  </li>
+<li>System.out.println(“start computer finished!”);  </li>
+<li>}  </li>
+<li></li>
+<li>public void shutdown(){  </li>
+<li>System.out.println(“begin to close the computer!”);  </li>
+<li>cpu.shutdown();  </li>
+<li>memory.shutdown();  </li>
+<li>disk.shutdown();  </li>
+<li>System.out.println(“computer closed!”);  </li>
+<li>}<br>27.}<br>User类如下：</li>
+</ol>
+<p>[java] view plaincopy<br>1.public class User {  </p>
+<ol>
+<li></li>
+<li>public static void main(String[] args) {  </li>
+<li>Computer computer = new Computer();  </li>
+<li>computer.startup();  </li>
+<li>computer.shutdown();  </li>
+<li>}<br>8.}<br>输出：</li>
+</ol>
+<p>start the computer!<br>cpu startup!<br>memory startup!<br>disk startup!<br>start computer finished!<br>begin to close the computer!<br>cpu shutdown!<br>memory shutdown!<br>disk shutdown!<br>computer closed!<br>```</p>
+<p>如果我们没有Computer类，那么，CPU、Memory、Disk他们之间将会相互持有实例，产生关系，这样会造成严重的依赖，修改一个类，可能会带来其他类的修改，这不是我们想要看到的，有了Computer类，他们之间的关系被放在了Computer类里，这样就起到了解耦的作用，这，就是外观模式！</p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/26/23种设计模式/">23种设计模式（转载）</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Oblivion 的个人博客">Oblivion</a></p>
+        <p><span>发布时间:</span>2016年11月26日 - 19时04分</p>
+        <p><span>最后更新:</span>2016年11月26日 - 19时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/26/23种设计模式/" title="23种设计模式（转载）">http://skyrim.me/2016/11/26/23种设计模式/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://skyrim.me/2016/11/26/23种设计模式/　　作者: Oblivion" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/11/26/富文本SpannableString/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          富文本SpannableString（转载）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/26/Activity的六种关闭方式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Activity的六种关闭方式（转载）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/26/富文本SpannableString/" title="上一篇: 富文本SpannableString（转载）">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/11/26/Activity的六种关闭方式/" title="下一篇: Activity的六种关闭方式（转载）">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python构建安装模块/">Python 构建安装模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python飞机大战/">Python 飞机大战</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/XShell连接Linux/">XShell连接Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/无法连接Mks套接字尝试次数太多/">无法连接Mks套接字尝试次数太多</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/关于Vue-cli跨域问题/">关于Vue-cli 跨域问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/TP5 使用php7出现no input file specified问题/">TP5 使用php7出现no input file specified问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/17/注解代替枚举/">注解代替枚举</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/07/PHP Exception not found/">PHP Exception not found</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go package & import/">Go package & import</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go 闭包写法解析/">Go 闭包写法解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/07/Vue Component 父子组件及组件选项/">Vue Component 父子组件及组件选项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/26/React Native 嵌入到原生应用/">React Native 嵌入到原生应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/Android Studio Build 错误/">Android Studio Build 错误</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/Sophix热修复问题以及加固/">Sophix热修复问题以及加固</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/kotlin.KotlinNullPointerException/">kotlin.KotlinNullPointerException</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/Android 缩略图工具/">Android 缩略图工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/10/Kotlin 的 接口.class实现书写方式/">Kotlin 的 接口.class实现书写方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/ToSlideProgressBar/">ToSlideProgressBar</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/AndroidStudio 预览Layout 问题/">AndroidStudio 预览Layout 问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/OpenGL学习/">OpenGL学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/类似支付宝禁止截屏/">类似支付宝禁止截屏</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/PHP学习记录/">PHP学习记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/融云自定义消息注意事项/">融云自定义消息注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/25/快速点击事件问题处理(多次点击)/">快速点击事件问题处理（多次点击）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/卡片翻转，动画闪烁问题修复/">卡片翻转，动画闪烁问题修复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/21/Gradle 加载别人家的项目/">Gradle 加载别人家的项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/RecyclerView 结合 卡片翻转效果/">RecyclerView 结合 卡片翻转效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Android 6.0 通讯录及RecyclerView 复用错乱Bug/">Android 6.0 通讯录及RecyclerView 复用错乱Bug</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案/">RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/OkhttpUtils的Cookie存储问题/">OkhttpUtils的Cookie存储问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/nodejs Java SSH Git ADB 全局配置/">nodejs Java SSH Git ADB 全局配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/09/Dagger2的空指针解决/">Dagger2的空指针解决</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/sectionRecycle的坑/">sectionRecycle的坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/06/MakeDown/">MakeDown</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Android-Zxing-lib实现二维码扫描及生成/">Android-Zxing-lib实现二维码扫描及生成</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/RollNum ,滚动数字/">RollNum ,滚动数字（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android Crash框架Recovery/">Android Crash框架Recovery</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android studio 混淆/">Android studio 混淆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/OkHttp java.net.SocketTimeoutException SSL handshake timed out in Android/">OkHttp java.net.SocketTimeoutException:SSL handshake timed out in Android</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/02/Git 一个远程使用的代码管理仓库/">Git 一个远程使用的代码管理仓库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/奇葩问题及注意事项/">奇葩问题及注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/JQuery学习之路-样式篇/">JQuery学习之路-样式篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Android ViewPager画廊效果/">Android ViewPager画廊效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/WebView+EventBus粘性Post实现界面跳转/">WebView+EventBus粘性Post实现界面跳转</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Android 面试/">Android 面试</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/10/Android 自动测试（转载）/">Android 自动测试（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）/">getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/03/Android_JNI实例/">Android_JNI实例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/02/OAuth认证授权流程/">OAuth认证授权流程（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_EventBus3.0/">Android_EventBus3.0</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_过度绘制优化/">Android_过度绘制优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/RecycleView不同类型Item&添加HeaderView&条目点击事件/">RecycleView不同类型Item&添加HeaderView&条目点击事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/Android热修复原理（HotFix）初涉/">Android热修复原理（HotFix）初涉</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/Theme切换（主题切换）/">Theme切换（主题切换）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/HelloCharts的简单Demo/">HelloCharts的简单Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/SpannableString的四种常用方式/">SpannableString的四种常用方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/富文本SpannableString/">富文本SpannableString（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/23种设计模式/">23种设计模式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/Activity的六种关闭方式/">Activity的六种关闭方式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android_RxJava + Retrofit + MVP雏形/">Android_RxJava + Retrofit + MVP雏形</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android 与JavaScript的交互/">Android 与JavaScript的交互</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/TabLayout + ViewPager + Fragment 实现动态框架/">TabLayout + ViewPager + Fragment 实现动态框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/Android MVP+Adapter+ViewHolder抽取-ListView最终优化/">Android MVP+Adapter+ViewHolder抽取-ListView最终优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/MVP设计思想-及MVP实现小Demo/">MVP设计思想-及MVP实现小Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/自用简单的一些小Utils/">自用简单的一些小Utils</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-视觉特效/">自定义控件-视觉特效</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件实现快速索引，字典排序/">自定义控件实现快速索引，字典排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/">自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-侧滑菜单/">自定义控件-侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/自定义实现侧滑菜单/">自定义实现侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/">自定义控件——ListView下拉刷新和上拉加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/23/继承View自定义开关控件/">继承View自定义开关控件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿优酷界面/">自定义仿优酷界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿ViewParger无限循环滑动界面/">自定义仿ViewParger无限循环滑动界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上/">简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/Android中加载大图片放置OOM异常/">Android中加载大图片放置OOM异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/明文获取MD5加密文/">明文获取MD5加密文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/抽取类实现左右滑动Activity,及滑动简单动画/">抽取类实现左右滑动Activity,及滑动简单动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/01/Hexo博客模板/">Hexo 博客模板</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Oblivion
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

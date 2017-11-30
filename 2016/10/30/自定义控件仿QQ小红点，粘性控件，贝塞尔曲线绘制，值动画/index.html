@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画 | Skyrim | Top</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="自定义控件仿QQ小红点，粘性控件1.实现自由拖拽 2.使用路径贝塞尔随手指拖动自由绘制 3.接口回调，实现监听事件先放出效果图有没有感觉像被拖拽的鼻屎1.继承与View — so我们需要重写方...">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画">
+<meta property="og:url" content="http://skyrim.me/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/index.html">
+<meta property="og:site_name" content="Skyrim | Top">
+<meta property="og:description" content="自定义控件仿QQ小红点，粘性控件1.实现自由拖拽 2.使用路径贝塞尔随手指拖动自由绘制 3.接口回调，实现监听事件先放出效果图有没有感觉像被拖拽的鼻屎1.继承与View — so我们需要重写方...">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20161030001938278">
+<meta property="og:updated_time" content="2016-10-29T16:32:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画">
+<meta name="twitter:description" content="自定义控件仿QQ小红点，粘性控件1.实现自由拖拽 2.使用路径贝塞尔随手指拖动自由绘制 3.接口回调，实现监听事件先放出效果图有没有感觉像被拖拽的鼻屎1.继承与View — so我们需要重写方...">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161030001938278">
+  
+    <link rel="alternative" href="/atom.xml" title="Skyrim | Top" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Oblivion</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">我的简历</a></li>
+                        
+                            <li><a href="/FrontEndGuide">酷站导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 12px;">Android Studio</a> <a href="/tags/GO/" style="font-size: 12px;">GO</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Kotlin/" style="font-size: 12px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/OpenGL/" style="font-size: 10px;">OpenGL</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/ReactNative/" style="font-size: 10px;">ReactNative</a> <a href="/tags/TP5/" style="font-size: 10px;">TP5</a> <a href="/tags/Vue/" style="font-size: 12px;">Vue</a> <a href="/tags/XShell/" style="font-size: 10px;">XShell</a> <a href="/tags/前端/" style="font-size: 12px;">前端</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 18px;">异常</a> <a href="/tags/控件/" style="font-size: 10px;">控件</a> <a href="/tags/杂项/" style="font-size: 18px;">杂项</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/热修复/" style="font-size: 10px;">热修复</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://luuman.github.io/">name</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">随便写写，写下一段传奇</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Oblivion</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Oblivion</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">print (&#34;To Top&#34;)</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">我的简历</a></li>
+                
+                    <li><a href="/FrontEndGuide">酷站导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=R3RxdXZ3c391cgc2NmkkKCo" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/oblivion0001" title="github">github</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/" class="article-date">
+      <time datetime="2016-10-29T16:32:14.000Z" itemprop="datePublished">2016-10-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="自定义控件仿QQ小红点，粘性控件"><a href="#自定义控件仿QQ小红点，粘性控件" class="headerlink" title="自定义控件仿QQ小红点，粘性控件"></a>自定义控件仿QQ小红点，粘性控件</h3><hr>
+<p><strong>1.实现自由拖拽</strong><br><strong>2.使用路径贝塞尔随手指拖动自由绘制</strong><br><strong>3.接口回调，实现监听事件</strong></p>
+<hr>
+<p><strong>先放出效果图</strong></p>
+<p><img src="http://img.blog.csdn.net/20161030001938278" alt="拖拽的鼻屎"></p>
+<p><strong><em>有没有感觉像被拖拽的鼻屎</em></strong></p>
+<p>1.继承与View   — so我们需要重写方法onMeasure()和onDraw().<br>感觉我不用多做解释考虑了。。。已经写了很详细了。卧槽</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line">public GooView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">       this(context, attrs, 0);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public GooView(Context context) &#123;</span><br><span class="line">       this(context, null);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public GooView(Context context, AttributeSet attrs, int defStyleAttr) &#123;</span><br><span class="line">       super(context, attrs, defStyleAttr);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 测量</span><br><span class="line">    *</span><br><span class="line">    * @param widthMeasureSpec</span><br><span class="line">    * @param heightMeasureSpec</span><br><span class="line">    */</span><br><span class="line">   @Override</span><br><span class="line">   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) &#123;</span><br><span class="line">       super.onMeasure(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">   &#125;</span><br><span class="line">     /**</span><br><span class="line">    * 绘图，作画</span><br><span class="line">    *</span><br><span class="line">    * @param canvas</span><br><span class="line">    */</span><br><span class="line"></span><br><span class="line">   @Override</span><br><span class="line">   protected void onDraw(Canvas canvas) &#123;</span><br><span class="line">       super.onDraw(canvas);</span><br><span class="line">       this.canvas = canvas;</span><br><span class="line">       //设定抗锯齿画笔</span><br><span class="line">       paint = new Paint(Paint.ANTI_ALIAS_FLAG);</span><br><span class="line">       //画笔颜色</span><br><span class="line">       paint.setColor(Color.BLUE);</span><br><span class="line">       //固定圆的点</span><br><span class="line">       mStickCenter = new PointF(100f, 200f);</span><br><span class="line">       //固定的圆环半径</span><br><span class="line">       assetsAadius = 100f;</span><br><span class="line">       //固定圆的点半径</span><br><span class="line">       if (distanceBetween2Points &gt; assetsAadius) &#123;</span><br><span class="line">           mStickRodius = 4f;</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           mStickRodius = 10f - 6f * move2stickDistance / assetsAadius;</span><br><span class="line">       &#125;</span><br><span class="line">       //画固定圆框</span><br><span class="line">       paint.setStyle(Paint.Style.STROKE);</span><br><span class="line">       canvas.drawCircle(mStickCenter.x, mStickCenter.y, assetsAadius, paint);</span><br><span class="line">       paint.setStyle(Paint.Style.FILL);</span><br><span class="line">       //移动圆的圆心</span><br><span class="line">       mDragCenter = getmDragCenter();</span><br><span class="line">       //移动圆半径</span><br><span class="line">       mDragRodius = 15f;</span><br><span class="line">       //是否不再作画</span><br><span class="line">       if (!cleanAllDraw) &#123;</span><br><span class="line">           //画出移动圆</span><br><span class="line">           canvas.drawCircle(mDragCenter.x, mDragCenter.y, mDragRodius, paint);</span><br><span class="line">           if (!beyondDistance) &#123;//如果超出方位不再画贝塞尔曲线和原点</span><br><span class="line">               //贝塞尔曲线绘制</span><br><span class="line">               upDraw(canvas, paint);</span><br><span class="line">               //得到当前移动圆圆心与</span><br><span class="line"></span><br><span class="line">               //画固定圆</span><br><span class="line">               canvas.drawCircle(mStickCenter.x, mStickCenter.y, mStickRodius, paint);</span><br><span class="line">           &#125;</span><br><span class="line">           //设定文本画笔</span><br><span class="line">           Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);</span><br><span class="line">           textPaint.setColor(Color.WHITE);</span><br><span class="line">           textPaint.setTextAlign(Paint.Align.CENTER);</span><br><span class="line">           textPaint.setTextSize(10f);</span><br><span class="line">           //画固定圆上边写上文本...</span><br><span class="line">           canvas.drawText(&quot;A&quot;, mStickCenter.x, mStickCenter.y + mStickRodius * 0.3f, textPaint);</span><br><span class="line">           //画移动圆,并在上边写上文本...</span><br><span class="line">           canvas.drawText(&quot;B&quot;, mDragCenter.x, mDragCenter.y + mDragRodius * 0.3f, textPaint);</span><br><span class="line">       &#125;</span><br><span class="line">       //重新设置为false;</span><br><span class="line">       beyondDistance = false;</span><br><span class="line">       cleanAllDraw = false;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 根据传入的移动圆的圆心开始作贝塞尔曲线,不管怎样画，最终的画会覆盖之前的画</span><br><span class="line">    *</span><br><span class="line">    * @param canvas 画布</span><br><span class="line">    * @param paint  画笔</span><br><span class="line">    */</span><br><span class="line">   private void upDraw(Canvas canvas, Paint paint) &#123;</span><br><span class="line">       //测到测量的两点圆中心点</span><br><span class="line">       PointF mMiddlePoint = GeometryUtil.getMiddlePoint(mStickCenter, mDragCenter);</span><br><span class="line">       //获得两圆圆心连线的斜率；</span><br><span class="line">       float yOffset = mStickCenter.y - mDragCenter.y;</span><br><span class="line">       float xOffset = mStickCenter.x - mDragCenter.x;</span><br><span class="line">       Double lineK = null;</span><br><span class="line">       if (xOffset != 0) &#123;</span><br><span class="line">           lineK = (double) (yOffset / xOffset);</span><br><span class="line">       &#125;</span><br><span class="line">       //****</span><br><span class="line">       paint.setColor(Color.RED);</span><br><span class="line">       //得到固定圆的两个附着点</span><br><span class="line">       PointF[] mStickPoints = GeometryUtil.getIntersectionPoints(mStickCenter, mStickRodius, lineK);</span><br><span class="line">       //得到移动圆的两个附着点</span><br><span class="line">       PointF[] mDragPoints = GeometryUtil.getIntersectionPoints(mDragCenter, mDragRodius, lineK);</span><br><span class="line">       //画出求出的四个点(测试用)</span><br><span class="line">       canvas.drawCircle(mStickPoints[0].x, mStickPoints[0].y, 2f, paint);</span><br><span class="line">       canvas.drawCircle(mStickPoints[1].x, mStickPoints[1].y, 2f, paint);</span><br><span class="line">       canvas.drawCircle(mDragPoints[0].x, mDragPoints[0].y, 2f, paint);</span><br><span class="line">       canvas.drawCircle(mDragPoints[1].x, mDragPoints[1].y, 2f, paint);</span><br><span class="line">       paint.setColor(Color.BLUE);</span><br><span class="line">       //绘制路径</span><br><span class="line">       Path path = new Path();</span><br><span class="line">       //移动到这个点</span><br><span class="line">       path.moveTo(mStickPoints[0].x, mStickPoints[0].y);</span><br><span class="line">       //画一半贝塞尔曲线</span><br><span class="line">       path.quadTo(mMiddlePoint.x, mMiddlePoint.y, mDragPoints[0].x, mDragPoints[0].y);</span><br><span class="line">       //画出直线</span><br><span class="line">       path.lineTo(mDragPoints[1].x, mDragPoints[1].y);</span><br><span class="line">       //画另一半贝塞尔曲线</span><br><span class="line">       path.quadTo(mMiddlePoint.x, mMiddlePoint.y, mStickPoints[1].x, mStickPoints[1].y);</span><br><span class="line">       //封闭路径</span><br><span class="line">       path.close();</span><br><span class="line">       //根据设定路径作画</span><br><span class="line">       canvas.drawPath(path, paint);</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>这里需要采用三角函数的技术，但是万能的开源，有一个数学工具类，</p>
+<p>提出来给你们看看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">package com.oblivion.utils;</span><br><span class="line"></span><br><span class="line">import android.graphics.PointF;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 几何图形工具</span><br><span class="line"> */</span><br><span class="line">public class GeometryUtil &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * As meaning of method name.</span><br><span class="line">     * 获得两点之间的距离</span><br><span class="line">     *</span><br><span class="line">     * @param p0</span><br><span class="line">     * @param p1</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static float getDistanceBetween2Points(PointF p0, PointF p1) &#123;</span><br><span class="line">        float distance = (float) Math.sqrt(Math.pow(p0.y - p1.y, 2) + Math.pow(p0.x - p1.x, 2));</span><br><span class="line">        return distance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Get middle point between p1 and p2.</span><br><span class="line">     * 获得两点连线的中点</span><br><span class="line">     *</span><br><span class="line">     * @param p1</span><br><span class="line">     * @param p2</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static PointF getMiddlePoint(PointF p1, PointF p2) &#123;</span><br><span class="line">        return new PointF((p1.x + p2.x) / 2.0f, (p1.y + p2.y) / 2.0f);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Get point between p1 and p2 by percent.</span><br><span class="line">     * 根据百分比获取两点之间的某个点坐标</span><br><span class="line">     *</span><br><span class="line">     * @param p1</span><br><span class="line">     * @param p2</span><br><span class="line">     * @param percent</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static PointF getPointByPercent(PointF p1, PointF p2, float percent) &#123;</span><br><span class="line">        return new PointF(evaluateValue(percent, p1.x, p2.x), evaluateValue(percent, p1.y, p2.y));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 根据分度值，计算从start到end中，fraction位置的值。fraction范围为0 -&gt; 1</span><br><span class="line">     *</span><br><span class="line">     * @param fraction</span><br><span class="line">     * @param start</span><br><span class="line">     * @param end</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static float evaluateValue(float fraction, Number start, Number end) &#123;</span><br><span class="line">        return start.floatValue() + (end.floatValue() - start.floatValue()) * fraction;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Get the point of intersection between circle and line.</span><br><span class="line">     * 获取 通过指定圆心，斜率为lineK的直线与圆的交点。</span><br><span class="line">     *</span><br><span class="line">     * @param pMiddle The circle center point.</span><br><span class="line">     * @param radius  The circle radius.</span><br><span class="line">     * @param lineK   The slope of line which cross the pMiddle.</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static PointF[] getIntersectionPoints(PointF pMiddle, float radius, Double lineK) &#123;</span><br><span class="line">        PointF[] points = new PointF[2];</span><br><span class="line"></span><br><span class="line">        float radian, xOffset = 0, yOffset = 0;</span><br><span class="line">        if (lineK != null) &#123;</span><br><span class="line">            radian = (float) Math.atan(lineK);</span><br><span class="line">            xOffset = (float) (Math.sin(radian) * radius);</span><br><span class="line">            yOffset = (float) (Math.cos(radian) * radius);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            xOffset = radius;</span><br><span class="line">            yOffset = 0;</span><br><span class="line">        &#125;</span><br><span class="line">        points[0] = new PointF(pMiddle.x + xOffset, pMiddle.y - yOffset);</span><br><span class="line">        points[1] = new PointF(pMiddle.x - xOffset, pMiddle.y + yOffset);</span><br><span class="line"></span><br><span class="line">        return points;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很简单吧。我们已经能画出一帧图片来了，所以。我们现在子需要对触摸点进行判断，然后对事件经行处理，就能得出入图所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   public boolean onTouchEvent(MotionEvent event) &#123;</span><br><span class="line">       switch (event.getAction()) &#123;</span><br><span class="line">           case MotionEvent.ACTION_DOWN://记录按下点，作为移动圆圆心起始点</span><br><span class="line">               downX_dot = event.getX();</span><br><span class="line">               downY_dot = event.getY();</span><br><span class="line">               PointF down_PointF = new PointF(downX_dot, downY_dot);</span><br><span class="line">               //如果按下点的距离大于外圆环</span><br><span class="line">               distanceBetween2Points = GeometryUtil.getDistanceBetween2Points(down_PointF, mStickCenter);</span><br><span class="line">               setmDragCenter(new PointF(downX_dot, downY_dot));</span><br><span class="line">               invalidate();</span><br><span class="line">               state = State.touch;//状态修改为触摸状态</span><br><span class="line">               setStateCallBack();</span><br><span class="line">               break;</span><br><span class="line">           case MotionEvent.ACTION_MOVE:</span><br><span class="line">               moveX_dot = event.getX();</span><br><span class="line">               moveY_dot = event.getY();</span><br><span class="line">               //移动点所在坐标</span><br><span class="line">               PointF move_pointF = new PointF(moveX_dot, moveY_dot);</span><br><span class="line">               //抬起点与原点的距离</span><br><span class="line">               move2stickDistance = GeometryUtil.getDistanceBetween2Points(move_pointF, mStickCenter);</span><br><span class="line">               //判断移动点是否超出范围</span><br><span class="line">               beyondDistance = move2stickDistance &gt; assetsAadius ? true : false;</span><br><span class="line">               setmDragCenter(new PointF(moveX_dot, moveY_dot));</span><br><span class="line">               invalidate();</span><br><span class="line">               setStateCallBack();</span><br><span class="line">               break;</span><br><span class="line">           case MotionEvent.ACTION_UP:</span><br><span class="line">               float upX_dot = event.getX();</span><br><span class="line">               float upY_dot = event.getY();</span><br><span class="line">               //抬起点所在坐标</span><br><span class="line">               up_pointF = new PointF(upX_dot, upY_dot);</span><br><span class="line">               //抬起点与原点的距离</span><br><span class="line">               up2stickDistance = GeometryUtil.getDistanceBetween2Points(up_pointF, mStickCenter);</span><br><span class="line">               //判断是否移动了</span><br><span class="line">               if (move2stickDistance &gt; assetsAadius) &#123;</span><br><span class="line">                   cleanAllDraw = true;</span><br><span class="line">                   invalidate();</span><br><span class="line">                   state = State.remove;//清除状态</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   //开始动画</span><br><span class="line">                   setAnimator();</span><br><span class="line">                   //设定回到默认值</span><br><span class="line">                   cleanAllDraw = false;</span><br><span class="line">                   state = State.retain;//保留状态</span><br><span class="line">               &#125;</span><br><span class="line">               move2stickDistance = 0;</span><br><span class="line">               setStateCallBack();</span><br><span class="line">               break;</span><br><span class="line">       &#125;</span><br><span class="line">       return true;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>事件完成里，大体框架能弄出来了，现在我们需要优化一下下，比如，我们需要什么时候将图片消失，社么时候存在，，这就。。。。<br>需要<strong>值动画</strong>进行处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 设定值动画</span><br><span class="line">     */</span><br><span class="line">    private void setAnimator() &#123;</span><br><span class="line">        ValueAnimator va = ValueAnimator.ofFloat(1.0f);</span><br><span class="line">        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onAnimationUpdate(ValueAnimator animation) &#123;</span><br><span class="line">                float animatedFraction = animation.getAnimatedFraction();</span><br><span class="line">                //获取手指离开点的距离</span><br><span class="line">                PointF pointByPercent = GeometryUtil.getPointByPercent(up_pointF, mStickCenter, animatedFraction);</span><br><span class="line">                //动态设定距离</span><br><span class="line">                setmDragCenter(pointByPercent);</span><br><span class="line">                invalidate();</span><br><span class="line">                System.out.println(animatedFraction);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        va.addListener(new AnimatorListenerAdapter() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onAnimationEnd(Animator animation) &#123;</span><br><span class="line">                super.onAnimationEnd(animation);</span><br><span class="line">                state = State.retain;//保留状态</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        //重力回弹</span><br><span class="line">        va.setInterpolator(new OvershootInterpolator(4));</span><br><span class="line">        //时长</span><br><span class="line">        va.setDuration(500);</span><br><span class="line">        va.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>最后写一下监听回调</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 创建粘性控件的消息监听</span><br><span class="line">   */</span><br><span class="line">  public void setOnMessageStateListener(onMessageStateListener listener) &#123;</span><br><span class="line">      monMessageStateListener = listener;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * 创建消息监听的回调</span><br><span class="line">   */</span><br><span class="line">  public interface onMessageStateListener &#123;</span><br><span class="line">      /**</span><br><span class="line">       * 正在操作消息</span><br><span class="line">       */</span><br><span class="line">      void onTouchMessage();</span><br><span class="line"></span><br><span class="line">      /**</span><br><span class="line">       * 保留消息</span><br><span class="line">       */</span><br><span class="line">      void onRetainMessage();</span><br><span class="line"></span><br><span class="line">      /**</span><br><span class="line">       * 清除消息</span><br><span class="line">       */</span><br><span class="line">      void onRemoveMessage();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * 响应接口回调</span><br><span class="line">   */</span><br><span class="line">  private void setStateCallBack() &#123;</span><br><span class="line">      if (monMessageStateListener != null) &#123;</span><br><span class="line"></span><br><span class="line">          if (state == State.retain) &#123;</span><br><span class="line">              monMessageStateListener.onRetainMessage();</span><br><span class="line">          &#125; else if (state == State.remove) &#123;</span><br><span class="line">              monMessageStateListener.onRemoveMessage();</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">              monMessageStateListener.onTouchMessage();</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>贴出MainActivity,看一下，怎么调用监听</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package com.oblivion.gooview;</span><br><span class="line"></span><br><span class="line">import android.support.v7.app.AppCompatActivity;</span><br><span class="line">import android.os.Bundle;</span><br><span class="line">import android.view.View;</span><br><span class="line"></span><br><span class="line">import com.oblivion.ui.GooView;</span><br><span class="line">import com.oblivion.utils.ToastUtils;</span><br><span class="line"></span><br><span class="line">public class MainActivity extends AppCompatActivity &#123;</span><br><span class="line"></span><br><span class="line">    private GooView view;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        view = new GooView(this);</span><br><span class="line">        setContentView(view);</span><br><span class="line">        view.setOnMessageStateListener(new GooView.onMessageStateListener() &#123;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public void onTouchMessage() &#123;</span><br><span class="line">                ToastUtils.setToast(getApplicationContext(),&quot;触摸&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public void onRetainMessage() &#123;</span><br><span class="line">                ToastUtils.setToast(getApplicationContext(),&quot;保留&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public void onRemoveMessage() &#123;</span><br><span class="line">                ToastUtils.setToast(getApplicationContext(),&quot;清除&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p><a href="https://github.com/oblivion0001/AndroidStudioProjects/tree/master/Test/gooview" target="_blank" rel="noopener">github源码下载</a></p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/">自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Oblivion 的个人博客">Oblivion</a></p>
+        <p><span>发布时间:</span>2016年10月30日 - 00时32分</p>
+        <p><span>最后更新:</span>2016年10月30日 - 00时32分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/" title="自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画">http://skyrim.me/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://skyrim.me/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/　　作者: Oblivion" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/10/30/自定义控件实现快速索引，字典排序/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          自定义控件实现快速索引，字典排序
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/30/自定义控件-侧滑菜单/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">自定义控件-侧滑菜单</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义控件仿QQ小红点，粘性控件"><span class="toc-number">1.</span> <span class="toc-text">自定义控件仿QQ小红点，粘性控件</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/10/30/自定义控件实现快速索引，字典排序/" title="上一篇: 自定义控件实现快速索引，字典排序">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/10/30/自定义控件-侧滑菜单/" title="下一篇: 自定义控件-侧滑菜单">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python构建安装模块/">Python 构建安装模块</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/Python飞机大战/">Python 飞机大战</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/XShell连接Linux/">XShell连接Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/14/无法连接Mks套接字尝试次数太多/">无法连接Mks套接字尝试次数太多</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/关于Vue-cli跨域问题/">关于Vue-cli 跨域问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/TP5 使用php7出现no input file specified问题/">TP5 使用php7出现no input file specified问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/17/注解代替枚举/">注解代替枚举</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/07/PHP Exception not found/">PHP Exception not found</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go package & import/">Go package & import</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Go 闭包写法解析/">Go 闭包写法解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/07/Vue Component 父子组件及组件选项/">Vue Component 父子组件及组件选项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/26/React Native 嵌入到原生应用/">React Native 嵌入到原生应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/Android Studio Build 错误/">Android Studio Build 错误</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/Sophix热修复问题以及加固/">Sophix热修复问题以及加固</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/kotlin.KotlinNullPointerException/">kotlin.KotlinNullPointerException</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/Android 缩略图工具/">Android 缩略图工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/10/Kotlin 的 接口.class实现书写方式/">Kotlin 的 接口.class实现书写方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/ToSlideProgressBar/">ToSlideProgressBar</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/AndroidStudio 预览Layout 问题/">AndroidStudio 预览Layout 问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/OpenGL学习/">OpenGL学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/22/类似支付宝禁止截屏/">类似支付宝禁止截屏</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/PHP学习记录/">PHP学习记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/融云自定义消息注意事项/">融云自定义消息注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/25/快速点击事件问题处理(多次点击)/">快速点击事件问题处理（多次点击）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/卡片翻转，动画闪烁问题修复/">卡片翻转，动画闪烁问题修复</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/21/Gradle 加载别人家的项目/">Gradle 加载别人家的项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/RecyclerView 结合 卡片翻转效果/">RecyclerView 结合 卡片翻转效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Android 6.0 通讯录及RecyclerView 复用错乱Bug/">Android 6.0 通讯录及RecyclerView 复用错乱Bug</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案/">RecyclerView，ListView,ViewPager 等各种控件复用问题解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/24/OkhttpUtils的Cookie存储问题/">OkhttpUtils的Cookie存储问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/nodejs Java SSH Git ADB 全局配置/">nodejs Java SSH Git ADB 全局配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/09/Dagger2的空指针解决/">Dagger2的空指针解决</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/sectionRecycle的坑/">sectionRecycle的坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/06/MakeDown/">MakeDown</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Android-Zxing-lib实现二维码扫描及生成/">Android-Zxing-lib实现二维码扫描及生成</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/RollNum ,滚动数字/">RollNum ,滚动数字（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android Crash框架Recovery/">Android Crash框架Recovery</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Android studio 混淆/">Android studio 混淆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/OkHttp java.net.SocketTimeoutException SSL handshake timed out in Android/">OkHttp java.net.SocketTimeoutException:SSL handshake timed out in Android</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/02/Git 一个远程使用的代码管理仓库/">Git 一个远程使用的代码管理仓库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/奇葩问题及注意事项/">奇葩问题及注意事项</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/JQuery学习之路-样式篇/">JQuery学习之路-样式篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Android ViewPager画廊效果/">Android ViewPager画廊效果</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/WebView+EventBus粘性Post实现界面跳转/">WebView+EventBus粘性Post实现界面跳转</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Android 面试/">Android 面试</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/10/Android 自动测试（转载）/">Android 自动测试（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）/">getContent()与 ButterKnife.unbind(this)的坑（NollPointerException）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/03/Android_JNI实例/">Android_JNI实例</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/02/OAuth认证授权流程/">OAuth认证授权流程（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_EventBus3.0/">Android_EventBus3.0</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/01/Android_过度绘制优化/">Android_过度绘制优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/RecycleView不同类型Item&添加HeaderView&条目点击事件/">RecycleView不同类型Item&添加HeaderView&条目点击事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/Android热修复原理（HotFix）初涉/">Android热修复原理（HotFix）初涉</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/Theme切换（主题切换）/">Theme切换（主题切换）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/HelloCharts的简单Demo/">HelloCharts的简单Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/27/SpannableString的四种常用方式/">SpannableString的四种常用方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/富文本SpannableString/">富文本SpannableString（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/23种设计模式/">23种设计模式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/26/Activity的六种关闭方式/">Activity的六种关闭方式（转载）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android_RxJava + Retrofit + MVP雏形/">Android_RxJava + Retrofit + MVP雏形</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/25/Android 与JavaScript的交互/">Android 与JavaScript的交互</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/TabLayout + ViewPager + Fragment 实现动态框架/">TabLayout + ViewPager + Fragment 实现动态框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/Android MVP+Adapter+ViewHolder抽取-ListView最终优化/">Android MVP+Adapter+ViewHolder抽取-ListView最终优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/MVP设计思想-及MVP实现小Demo/">MVP设计思想-及MVP实现小Demo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/自用简单的一些小Utils/">自用简单的一些小Utils</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-视觉特效/">自定义控件-视觉特效</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件实现快速索引，字典排序/">自定义控件实现快速索引，字典排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画/">自定义控件仿QQ小红点，粘性控件，贝塞尔曲线绘制，值动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/30/自定义控件-侧滑菜单/">自定义控件-侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/自定义实现侧滑菜单/">自定义实现侧滑菜单</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/自定义控件——ListView下拉刷新和上拉加载/">自定义控件——ListView下拉刷新和上拉加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/23/继承View自定义开关控件/">继承View自定义开关控件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿优酷界面/">自定义仿优酷界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/22/自定义仿ViewParger无限循环滑动界面/">自定义仿ViewParger无限循环滑动界面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上/">简易的多线程下载，并非框架，只是思想而已，好吧思想也算不上</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/Android中加载大图片放置OOM异常/">Android中加载大图片放置OOM异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/明文获取MD5加密文/">明文获取MD5加密文</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/抽取类实现左右滑动Activity,及滑动简单动画/">抽取类实现左右滑动Activity,及滑动简单动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/01/Hexo博客模板/">Hexo 博客模板</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Oblivion
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
